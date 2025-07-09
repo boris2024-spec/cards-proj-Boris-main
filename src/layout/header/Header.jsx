@@ -86,7 +86,7 @@ function Header() {
     { label: 'Home', path: ROUTES.root, icon: <Home /> },
     { label: 'About', path: ROUTES.about, icon: <Info /> },
     { label: 'Favorite Cards', path: ROUTES.favorite, icon: <Favorite /> },
-    { label: 'Sandbox', path: ROUTES.sandbox, icon: <Science /> },
+    { label: 'My Cards', path: ROUTES.sandbox, icon: <Science /> },
   ];
 
   const authItems = user ? [] : [
