@@ -98,7 +98,8 @@ function SandboxPage() {
   // Функция для удаления карточки из состояния
   const handleDeleteCard = useCallback((cardId) => {
     setCards(prevCards => prevCards.filter(card => card._id !== cardId));
-  }, []);
+    setSnack("success", "The card has been successfully deleted.");
+  }, [setSnack]);
 
   useEffect(() => {
     if (token) {

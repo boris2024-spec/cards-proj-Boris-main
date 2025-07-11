@@ -57,7 +57,7 @@ function CreateCard({ onCardCreated }) {
                 }
             );
             console.log("Server response:", response.data);
-            alert("Card created successfully!");
+            // alert("Card created successfully!");
             // Call callback to update the card list if provided
             if (onCardCreated) {
                 onCardCreated();
