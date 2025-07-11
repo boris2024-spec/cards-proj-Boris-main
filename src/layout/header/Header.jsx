@@ -53,6 +53,7 @@ function Header() {
   const { toggleMode, isDark } = useTheme();
   const muiTheme = useMuiTheme();
   const { user } = useCurrentUser();
+  console.log("user:", user);
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -364,6 +365,7 @@ function Header() {
               {user ? (
                 <>
                   <Tooltip title={`Welcome, ${user.first}!`} arrow>
+
                     <IconButton
                       color="inherit"
                       sx={{
