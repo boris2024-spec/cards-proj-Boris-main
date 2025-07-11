@@ -69,6 +69,7 @@ function Header() {
     setQuery(q);
   }, [searchParams]);
 
+
   useEffect(() => {
     setSearchParams({ q: query });
   }, [query, setSearchParams]);

@@ -36,7 +36,7 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete }) {
       if (response.ok) {
         if (onDelete) onDelete(cardId);
       } else {
-        alert("Error deleting card. It is not your card");
+        alert("Error deleting card. It is not your card.");
       }
     } catch (error) {
       alert("Network error: " + error);
