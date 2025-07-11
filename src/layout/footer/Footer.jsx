@@ -23,7 +23,7 @@ import ROUTES from "../../routes/routesDict";
 function Footer() {
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery('(max-width:1080px)');
 
   const navigationItems = [
     { icon: <Home />, label: "Home", route: ROUTES.root },

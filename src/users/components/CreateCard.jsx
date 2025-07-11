@@ -15,7 +15,7 @@ function CreateCard({ onCardCreated }) {
     const { token } = useCurrentUser();
     const handleCreateCard = async (cardData) => {
         try {
-            // Преобразуем данные в правильный формат для API
+            // Transform data to the correct format for the API
             const cardDataForServer = {
                 ...cardData,
                 houseNumber: parseInt(cardData.houseNumber) || 0,
@@ -34,7 +34,7 @@ function CreateCard({ onCardCreated }) {
                 }
             };
 
-            // Удаляем поля, которые не нужны в корне объекта
+            // Remove fields that are not needed at the root of the object
             delete cardDataForServer.url;
             delete cardDataForServer.alt;
             delete cardDataForServer.state;
@@ -44,8 +44,8 @@ function CreateCard({ onCardCreated }) {
             delete cardDataForServer.houseNumber;
             delete cardDataForServer.zip;
 
-            console.log("Отправляемые данные:", cardDataForServer);
-            console.log("Токен:", token);
+            console.log("Sending data:", cardDataForServer);
+            console.log("Token:", token);
 
             const response = await axios.post(
                 "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
@@ -56,21 +56,21 @@ function CreateCard({ onCardCreated }) {
                     }
                 }
             );
-            console.log("Ответ сервера:", response.data);
-            alert("Карточка успешно создана!");
-            // Вызываем callback для обновления списка карточек, если он передан
+            console.log("Server response:", response.data);
+            alert("Card created successfully!");
+            // Call callback to update the card list if provided
             if (onCardCreated) {
                 onCardCreated();
             } else {
-                // Если callback не передан, переходим на страницу всех карточек
+                // If callback is not provided, navigate to all cards page
                 navigate("/cards");
             }
         } catch (error) {
-            console.error("Ошибка при создании карточки:", error);
-            console.error("Детали ошибки:", error.response?.data);
-            console.error("Статус ошибки:", error.response?.status);
-            console.error("Заголовки ответа:", error.response?.headers);
-            alert("Не удалось создать карточку. Проверьте данные и попробуйте снова.");
+            console.error("Error creating card:", error);
+            console.error("Error details:", error.response?.data);
+            console.error("Error status:", error.response?.status);
+            console.error("Response headers:", error.response?.headers);
+            alert("Failed to create card. Please check your data and try again.");
         }
     };
 
@@ -257,7 +257,7 @@ function CreateCard({ onCardCreated }) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         name="houseNumber"
-                        label="Housenumber"
+                        label="House number"
                         variant="outlined"
                         fullWidth
                         required

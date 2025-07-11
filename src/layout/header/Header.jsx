@@ -60,7 +60,7 @@ function Header() {
   const navigate = useNavigate();
 
   // Check if screen is mobile
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+  const isMobile = useMediaQuery('(max-width:1080px)');
 
   // Добавляю синхронизацию query с параметром q из URL
   useEffect(() => {

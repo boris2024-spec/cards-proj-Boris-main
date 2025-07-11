@@ -135,6 +135,7 @@ function SandboxPage() {
         sx={{
           py: { xs: 3, md: 4 },
           mb: 3,
+          borderRadius: 0,
           backgroundColor: isDark ? 'grey.800' : 'primary.main',
           color: isDark ? 'white' : 'white',
         }}
@@ -144,6 +145,7 @@ function SandboxPage() {
             display: 'flex',
             alignItems: 'center',
             gap: { xs: 1, md: 2 },
+
             flexDirection: { xs: 'column', sm: 'row' },
             textAlign: { xs: 'center', sm: 'left' }
           }}>
@@ -155,7 +157,7 @@ function SandboxPage() {
                 gutterBottom
                 sx={{ fontSize: { xs: '1.75rem', md: '2.125rem' } }}
               >
-                Sandbox - Create & Manage Cards
+                My Business Cards - Create & Manage Cards
               </Typography>
               <Typography
                 variant="subtitle1"
