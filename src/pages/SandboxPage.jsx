@@ -92,8 +92,9 @@ function SandboxPage() {
     if (token) {
       getMyCardsFromServer();
       setShowCreateForm(false);
+      setSnack("success", "Card successfully created");
     }
-  }, [getMyCardsFromServer, token]);
+  }, [getMyCardsFromServer, token, setSnack]);
 
   // Функция для удаления карточки из состояния
   const handleDeleteCard = useCallback((cardId) => {
