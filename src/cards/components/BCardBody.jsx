@@ -20,6 +20,8 @@ function BCardBody({ title, subtitle, phone, city, bizNumber }) {
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
           fontSize: { xs: '1rem', sm: '1.25rem' }
+          
+          
         }}
       >
         {title}

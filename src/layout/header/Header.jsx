@@ -33,7 +33,13 @@ import {
   ExpandLess,
   ExpandMore,
   AccountCircle,
-  Logout
+  Logout,
+  // добавляю иконки для соцсетей
+  GitHub,
+  LinkedIn,
+  Email,
+  Phone,
+  LocationOn
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
@@ -92,6 +98,15 @@ function Header() {
   const authItems = user ? [] : [
     { label: 'Register', path: ROUTES.register, icon: <PersonAdd /> },
     { label: 'Login', path: ROUTES.login, icon: <Login /> },
+  ];
+
+  // socialLinks для Mobile Drawer
+  const socialLinks = [
+    { icon: <GitHub />, label: "GitHub", url: "https://github.com" },
+    { icon: <LinkedIn />, label: "LinkedIn", url: "https://linkedin.com" },
+    { icon: <Email />, label: "Contact", url: "mailto:contact@businesscards.com" },
+    { icon: <Phone />, label: "Phone", url: "tel:0545555555" },
+    { icon: <LocationOn />, label: "Location", url: "https://maps.app.goo.gl/A6uTkTi8eMzWShxGA" },
   ];
 
   const drawer = (
@@ -200,6 +215,18 @@ function Header() {
             </ListItem>
           ))
         )}
+      </List>
+      {/* Social Links Section */}
+      <Divider />
+      <List>
+        {socialLinks.map((item) => (
+          <ListItem key={item.label} disablePadding>
+            <ListItemButton component="a" href={item.url} target="_blank" rel="noopener noreferrer">
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );

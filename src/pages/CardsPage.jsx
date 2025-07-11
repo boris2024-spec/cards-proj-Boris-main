@@ -78,7 +78,7 @@ function CardsPage() {
         setSnack("success", "Card preference updated");
       } catch (error) {
         console.error('Error toggling like:', error);
-        setSnack("error", "Failed to update card preference");
+        setSnack("error", "Failed to update card preference please Login");
       }
     },
     [token, setSnack]
@@ -152,6 +152,7 @@ function CardsPage() {
         sx={{
           py: { xs: 3, md: 4 },
           mb: 3,
+          borderRadius: 0,
           backgroundColor: isDark ? 'grey.800' : 'primary.main',
           color: isDark ? 'white' : 'white',
         }}

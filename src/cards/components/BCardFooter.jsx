@@ -6,10 +6,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CardActions, IconButton, Tooltip, Divider } from "@mui/material";
 import { useCurrentUser } from "../../users/providers/UserProvider";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../../routes/routesDict";
 
 function BCardFooter({ toggleLike, cardId, likes, phone, onDelete }) {
   const { user, token } = useCurrentUser();
   const [isLiked, setIsLiked] = useState(likes.includes(user?._id));
+  const navigate = useNavigate();
 
   const handleLikeToggle = (e) => {
     e.stopPropagation(); // Prevent card click navigation
@@ -33,11 +36,16 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete }) {
       if (response.ok) {
         if (onDelete) onDelete(cardId);
       } else {
-        alert("Error deleting card");
+        alert("Error deleting card. It is not your card");
       }
     } catch (error) {
       alert("Network error: " + error);
     }
+  };
+
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    navigate(ROUTES.editCard.replace(":id", cardId));
   };
 
   const handleButtonClick = (e) => {
@@ -62,38 +70,44 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete }) {
         disableSpacing
       >
         {/* Management Actions */}
-        <Box sx={{ display: 'flex', gap: 0.5 }}>
-          <Tooltip title="Delete Card" arrow>
-            <IconButton
-              onClick={handleDelete}
-              size="small"
-              sx={{
-                color: 'error.main',
-                '&:hover': {
-                  backgroundColor: 'error.light',
-                  color: 'white'
-                }
-              }}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Edit Card" arrow>
-            <IconButton
-              onClick={handleButtonClick}
-              size="small"
-              sx={{
-                color: 'primary.main',
-                '&:hover': {
-                  backgroundColor: 'primary.light',
-                  color: 'white'
-                }
-              }}
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+        <Box sx={{ display: 'flex', gap: 0.5, minWidth: 80 }}>
+          {user ? (
+            <>
+              <Tooltip title="Delete Card" arrow>
+                <IconButton
+                  onClick={handleDelete}
+                  size="small"
+                  sx={{
+                    color: 'error.main',
+                    '&:hover': {
+                      backgroundColor: 'error.light',
+                      color: 'white'
+                    }
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit Card" arrow>
+                <IconButton
+                  onClick={handleEdit}
+                  size="small"
+                  sx={{
+                    color: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'primary.light',
+                      color: 'white'
+                    }
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            // Пустой Box-заполнитель, чтобы сохранить ширину
+            <Box sx={{ width: 64, height: 32 }} />
+          )}
         </Box>
 
         {/* Interaction Actions */}

@@ -13,7 +13,9 @@ import {
   Science,
   GitHub,
   LinkedIn,
-  Email
+  Email,
+  Phone,
+  LocationOn
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
@@ -28,12 +30,15 @@ function Footer() {
     { icon: <Info />, label: "About", route: ROUTES.about },
     { icon: <Favorite />, label: "Favorites", route: ROUTES.favorite },
     { icon: <Science />, label: "Sandbox", route: ROUTES.sandbox },
+
   ];
 
   const socialLinks = [
     { icon: <GitHub />, label: "GitHub", url: "https://github.com" },
     { icon: <LinkedIn />, label: "LinkedIn", url: "https://linkedin.com" },
     { icon: <Email />, label: "Contact", url: "mailto:contact@businesscards.com" },
+    { icon: <Phone />, label: "Phone", url: "tel:0545555555" },
+    { icon: <LocationOn />, label: "Location", url: "https://maps.app.goo.gl/A6uTkTi8eMzWShxGA" },
   ];
 
   return (

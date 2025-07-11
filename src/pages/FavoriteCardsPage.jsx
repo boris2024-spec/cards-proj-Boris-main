@@ -213,7 +213,8 @@ function FavoriteCardsPage() {
         sx={{
           py: { xs: 3, md: 4 },
           mb: 3,
-          backgroundColor: isDark ? 'grey.800' : 'error.main',
+          borderRadius: 0,
+          backgroundColor: isDark ? 'grey.800' : 'primary.main',
           color: 'white',
         }}
       >
@@ -225,7 +226,7 @@ function FavoriteCardsPage() {
             flexDirection: { xs: 'column', sm: 'row' },
             textAlign: { xs: 'center', sm: 'left' }
           }}>
-            <Favorite sx={{ fontSize: { xs: 32, md: 40 } }} />
+            <Favorite color="error" sx={{ fontSize: { xs: 32, md: 40 } }} />
             <Box>
               <Typography
                 variant="h4"

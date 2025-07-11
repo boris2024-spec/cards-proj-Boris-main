@@ -41,10 +41,20 @@ export default function useForm(initialForm, schemaObj, onSubmit) {
     }
   };
 
+  const validateForm = () => {
+    // Проверяем, что нет ошибок и все поля заполнены
+    const hasErrors = Object.keys(errors).length > 0;
+    const allFieldsFilled = Object.values(formDetails).every((val) => val !== undefined && val !== null && val !== "");
+    return !hasErrors && allFieldsFilled;
+  };
+
   return {
     formDetails,
     errors,
     handleChange,
     handleSubmit,
+    validateForm,
   };
 }
+
+
