@@ -36,30 +36,33 @@ const Form = ({
         {children}
       </Grid>
 
-      <Grid container spacing={1} my={2} direction="row" width="100">
-        <Grid item xs={12} sm={6}>
+      <Grid container spacing={1} my={2} direction="row" width="100%" justifyContent="center" alignItems="center">
+        <Grid item xs={12} sm={4} display="flex" justifyContent="center">
           <FormButton
             node="cancel"
             color="error"
             component="div"
             variant="outlined"
+            size="large"
             onClick={() => navigate(to)}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4} display="flex" justifyContent="center">
           <FormButton
             node={<LoopIcon />}
             variant="outlined"
             component="div"
+            size="large"
             onClick={onReset}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={4} display="flex" justifyContent="center">
           <FormButton
             node="Submit"
             onClick={e => { e.preventDefault(); onSubmit(); }}
             disabled={!validateForm ? false : !validateForm()}
             size="large"
+            variant="contained"
           />
         </Grid>
       </Grid>

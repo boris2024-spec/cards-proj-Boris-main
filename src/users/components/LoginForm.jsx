@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 import Form from "../../components/Form";
 import useForm from "../../hooks/useForm";
 
@@ -40,28 +40,37 @@ function LoginForm() {
   );
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      onReset={() => {}}
-      title={"sign in form"}
-      styles={{ maxWidth: "600px" }}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "60vh",
+      }}
     >
-      <TextField
-        name="email"
-        label="email"
-        error={errors.email}
-        onChange={handleChange}
-        value={formDetails.email}
-      />
-      <TextField
-        name="password"
-        label="password"
-        error={errors.password}
-        onChange={handleChange}
-        value={formDetails.password}
-        type="password"
-      />
-    </Form>
+      <Form
+        onSubmit={handleSubmit}
+        onReset={() => { }}
+        title={"sign in form"}
+        styles={{ maxWidth: "600px" }}
+      >
+        <TextField
+          name="email"
+          label="email"
+          error={errors.email}
+          onChange={handleChange}
+          value={formDetails.email}
+        />
+        <TextField
+          name="password"
+          label="password"
+          error={errors.password}
+          onChange={handleChange}
+          value={formDetails.password}
+          type="password"
+        />
+      </Form>
+    </Box>
   );
 }
 
