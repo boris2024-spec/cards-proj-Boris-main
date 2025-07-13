@@ -193,7 +193,7 @@ function Header() {
                   <AccountCircle />
                 </ListItemIcon>
                 <ListItemText
-                  primary={`Welcome, ${user.first}!`}
+                  primary={`Welcome, ${user.name?.first?.toUpperCase() || ''}!`}
                   secondary={user.email}
                 />
               </ListItemButton>
@@ -365,7 +365,7 @@ function Header() {
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               {user ? (
                 <>
-                  <Tooltip title={`Welcome, ${user.first}!`} arrow>
+                  <Tooltip title={`Welcome, ${user.name?.first?.toUpperCase() || ''}!`} arrow>
 
                     <IconButton
                       color="inherit"
