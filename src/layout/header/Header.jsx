@@ -111,6 +111,9 @@ function Header() {
     { icon: <LocationOn />, label: "Location", url: "https://maps.app.goo.gl/A6uTkTi8eMzWShxGA" },
   ];
 
+  // Добавляю функцию-хелпер для форматирования имени
+  const capitalize = (str) => str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : '';
+
   const drawer = (
     <Box sx={{ width: 280 }} role="presentation">
       {/* Header */}
@@ -193,7 +196,7 @@ function Header() {
                   <AccountCircle />
                 </ListItemIcon>
                 <ListItemText
-                  primary={`Welcome, ${user.name?.first ? user.name.first[0].toUpperCase() + user.name.first.slice(1).toLowerCase() : ''}!`}
+                  primary={`Welcome, ${capitalize(user.name?.first)}!`}
                   secondary={user.email}
                 />
               </ListItemButton>
@@ -365,7 +368,7 @@ function Header() {
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               {user ? (
                 <>
-                  <Tooltip title={`Welcome, ${user.name?.first ? user.name.first[0].toUpperCase() + user.name.first.slice(1).toLowerCase() : ''}!`} arrow>
+                  <Tooltip title={`Welcome, ${capitalize(user.name?.first)}!`} arrow>
 
                     <IconButton
                       color="inherit"
