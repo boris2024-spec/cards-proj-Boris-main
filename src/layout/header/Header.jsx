@@ -61,7 +61,7 @@ function Header() {
   const navigate = useNavigate();
 
   // Check if screen is mobile
-  const isMobile = useMediaQuery('(max-width:1080px)');
+  const isMobile = useMediaQuery('(max-width:1180px)');
 
   // Добавляю синхронизацию query с параметром q из URL
   useEffect(() => {
