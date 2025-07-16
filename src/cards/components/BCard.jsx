@@ -53,6 +53,7 @@ function BCard({ card, toggleLike, onDelete }) {
           likes={card.likes}
           phone={card.phone}
           onDelete={onDelete}
+          ownerId={card.user_id || card.userId || card.owner}
         />
       </Box>
     </Card>

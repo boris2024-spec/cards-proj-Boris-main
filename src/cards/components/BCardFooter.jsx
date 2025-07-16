@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
 
-function BCardFooter({ toggleLike, cardId, likes, phone, onDelete }) {
+function BCardFooter({ toggleLike, cardId, likes, phone, onDelete, ownerId }) {
   const { user, token } = useCurrentUser();
   const [isLiked, setIsLiked] = useState(likes.includes(user?._id));
   const navigate = useNavigate();
@@ -73,36 +73,40 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete }) {
         <Box sx={{ display: 'flex', gap: 0.5, minWidth: 80 }}>
           {user ? (
             <>
-              <Tooltip title="Delete Card" arrow>
-                <IconButton
-                  onClick={handleDelete}
-                  size="small"
-                  sx={{
-                    color: 'error.main',
-                    '&:hover': {
-                      backgroundColor: 'error.light',
-                      color: 'white'
-                    }
-                  }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit Card" arrow>
-                <IconButton
-                  onClick={handleEdit}
-                  size="small"
-                  sx={{
-                    color: 'primary.main',
-                    '&:hover': {
-                      backgroundColor: 'primary.light',
-                      color: 'white'
-                    }
-                  }}
-                >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+              {user._id === ownerId && (
+                <Tooltip title="Delete Card" arrow>
+                  <IconButton
+                    onClick={handleDelete}
+                    size="small"
+                    sx={{
+                      color: 'error.main',
+                      '&:hover': {
+                        backgroundColor: 'error.light',
+                        color: 'white'
+                      }
+                    }}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {user._id === ownerId && (
+                <Tooltip title="Edit Card" arrow>
+                  <IconButton
+                    onClick={handleEdit}
+                    size="small"
+                    sx={{
+                      color: 'primary.main',
+                      '&:hover': {
+                        backgroundColor: 'primary.light',
+                        color: 'white'
+                      }
+                    }}
+                  >
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
             </>
           ) : (
             // Пустой Box-заполнитель, чтобы сохранить ширину

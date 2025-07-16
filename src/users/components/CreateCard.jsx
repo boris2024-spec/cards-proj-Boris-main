@@ -7,15 +7,61 @@ import Form from "../../components/Form";
 import useForm from "../../hooks/useForm";
 import { initialCardForm, cardSchema } from "../models/createSchema";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCurrentUser } from "../providers/UserProvider";
+import { useEffect, useState } from "react";
 
 function CreateCard({ onCardCreated }) {
     const navigate = useNavigate();
     const { token } = useCurrentUser();
-    const handleCreateCard = async (cardData) => {
+    const { id } = useParams();
+    const [loading, setLoading] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [cardData, setCardData] = useState(null);
+
+    useEffect(() => {
+        if (id) {
+            setEditMode(true);
+            setLoading(true);
+            // Получаем данные карточки для редактирования
+            axios.get(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`)
+                .then(res => {
+                    const data = res.data;
+                    setCardData(data);
+                    // Заполняем форму
+                    handleFillForm(data);
+                })
+                .catch(() => alert('Error loading card data'))
+                .finally(() => setLoading(false));
+        }
+    }, [id]);
+
+    const handleFillForm = (data) => {
+        // Преобразуем данные карточки в формат формы
+        const filled = {
+            title: data.title || '',
+            subtitle: data.subtitle || '',
+            description: data.description || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            web: data.web || '',
+            url: data.image?.url || '',
+            alt: data.image?.alt || '',
+            state: data.address?.state || '',
+            country: data.address?.country || '',
+            city: data.address?.city || '',
+            street: data.address?.street || '',
+            houseNumber: data.address?.houseNumber || '',
+            zip: data.address?.zip || '',
+        };
+        // Устанавливаем значения в useForm
+        Object.keys(filled).forEach(key => {
+            handleChange({ target: { name: key, value: filled[key] } });
+        });
+    };
+
+    const handleCreateOrUpdateCard = async (cardData) => {
         try {
-            // Transform data to the correct format for the API
             const cardDataForServer = {
                 ...cardData,
                 houseNumber: parseInt(cardData.houseNumber) || 0,
@@ -33,8 +79,6 @@ function CreateCard({ onCardCreated }) {
                     zip: cardData.zip ? parseInt(cardData.zip) : null
                 }
             };
-
-            // Remove fields that are not needed at the root of the object
             delete cardDataForServer.url;
             delete cardDataForServer.alt;
             delete cardDataForServer.state;
@@ -44,48 +88,48 @@ function CreateCard({ onCardCreated }) {
             delete cardDataForServer.houseNumber;
             delete cardDataForServer.zip;
 
-            console.log("Sending data:", cardDataForServer);
-            console.log("Token:", token);
-
-            const response = await axios.post(
-                "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
-                cardDataForServer,
-                {
-                    headers: {
-                        "x-auth-token": token
-                    }
-                }
-            );
-            console.log("Server response:", response.data);
-            // alert("Card created successfully!");
-            // Call callback to update the card list if provided
+            if (editMode && id) {
+                // PUT-запрос для обновления
+                await axios.put(
+                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`,
+                    cardDataForServer,
+                    { headers: { "x-auth-token": token } }
+                );
+                alert('The card has been updated successfully!');
+                navigate(`/card-details/${id}`);
+            } else {
+                // POST-запрос для создания
+                await axios.post(
+                    "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
+                    cardDataForServer,
+                    { headers: { "x-auth-token": token } }
+                );
+                alert('Card successfully created!');
+                navigate(`/card-details/${id}`);
+            }
             if (onCardCreated) {
                 onCardCreated();
             } else {
-                // If callback is not provided, navigate to all cards page
-                navigate("/cards");
+                navigate(`/card-details/${id}`);
             }
         } catch (error) {
-            console.error("Error creating card:", error);
-            console.error("Error details:", error.response?.data);
-            console.error("Error status:", error.response?.status);
-            console.error("Response headers:", error.response?.headers);
-            alert("Failed to create card. Please check your data and try again.");
+            alert("Error saving card. Check your details and try again.");
         }
     };
 
     const { formDetails, errors, handleChange, handleSubmit } = useForm(
         initialCardForm,
         cardSchema,
-        handleCreateCard
+        handleCreateOrUpdateCard
     );
 
-    return (
+    if (loading) return <div>Загрузка...</div>;
 
+    return (
         <Form
             onSubmit={handleSubmit}
             onReset={() => { }}
-            title="Create Card"
+            title={editMode ? "Edit card" : "Create a card"}
             styles={{ maxWidth: "600px", mx: "auto" }}
         >
             <Grid container spacing={2}>

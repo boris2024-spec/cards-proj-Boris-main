@@ -6,9 +6,13 @@ import {
   Alert,
   Paper,
   Fab,
-  Zoom
+  Zoom,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel
 } from "@mui/material";
-import { BusinessCenter } from "@mui/icons-material";
+import { BusinessCenter, CardTravel } from "@mui/icons-material";
 import KeyboardControlKeyIcon from '@mui/icons-material/KeyboardControlKey';
 import { useCallback, useEffect, useState } from "react";
 import BCards from "../cards/components/BCards";
@@ -28,6 +32,7 @@ function CardsPage() {
   const [searchParams] = useSearchParams();
   const { token } = useCurrentUser();
   const { isDark } = useTheme();
+  const [filter, setFilter] = useState("default"); // default, likes, date
 
   const getCardsFromServer = useCallback(async () => {
     try {
@@ -103,6 +108,17 @@ function CardsPage() {
     }
   }, [searchParams, cards]);
 
+  // Сортировка карточек по фильтру
+  const getSortedCards = () => {
+    let sorted = [...filteredCards];
+    if (filter === "likes") {
+      sorted.sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0));
+    } else if (filter === "date") {
+      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    return sorted;
+  };
+
   // Отслеживание прокрутки для показа кнопки "вернуться наверх"
   useEffect(() => {
     const handleScroll = () => {
@@ -165,7 +181,7 @@ function CardsPage() {
             flexDirection: { xs: 'column', sm: 'row' },
             textAlign: { xs: 'center', sm: 'left' }
           }}>
-            <BusinessCenter sx={{ fontSize: { xs: 32, md: 40 } }} />
+            <CardTravel sx={{ fontSize: { xs: 32, md: 40 } }} />
             <Box>
               <Typography
                 variant="h4"
@@ -185,12 +201,60 @@ function CardsPage() {
                 }
               </Typography>
             </Box>
+            {/* Фильтр карточек */}
+            <Box sx={{ ml: { xs: 0, sm: 'auto' }, mt: { xs: 2, sm: 0 }, minWidth: 180 }}>
+              <FormControl fullWidth size="small" variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    color: 'white',
+                    '& fieldset': {
+                      borderColor: 'white',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'white',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'white',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'white',
+                  },
+                  '& .MuiSvgIcon-root': {
+                    color: 'white',
+                  },
+                }}
+              >
+                <InputLabel id="filter-label">Sort by</InputLabel>
+                <Select
+                  labelId="filter-label"
+                  value={filter}
+                  label="Sort by"
+                  onChange={e => setFilter(e.target.value)}
+                  sx={{
+                    color: 'white',
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        backgroundColor: isDark ? 'grey.900' : 'primary.main',
+                        color: 'white',
+                      }
+                    }
+                  }}
+                >
+                  <MenuItem value="default">No sorting</MenuItem>
+                  <MenuItem value="likes">By likes</MenuItem>
+                  <MenuItem value="date">By date added</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </Box>
         </Container>
       </Paper>
 
       {/* Cards Grid */}
-      <BCards cards={filteredCards} toggleLike={toggleLike} />
+      <BCards cards={getSortedCards()} toggleLike={toggleLike} />
 
       {/* Scroll to Top Button */}
       <Zoom in={showScrollToTop}>

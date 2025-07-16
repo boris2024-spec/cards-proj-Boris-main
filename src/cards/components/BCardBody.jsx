@@ -1,5 +1,5 @@
 import { CardContent, Divider, Typography, Box, Chip } from "@mui/material";
-import { LocationOn, Phone, BusinessCenter } from "@mui/icons-material";
+import { LocationOn, Phone, BusinessCenter,  } from "@mui/icons-material";
 import PropTypes from "prop-types";
 
 function BCardBody({ title, subtitle, phone, city, bizNumber }) {

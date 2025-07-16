@@ -7,6 +7,7 @@ const ROUTES = {
   register: "/register",
   sandbox: "/sandbox",
   cardDetails: "/card-details/:id",
+  editCard: "/edit-card/:id",
 };
 
 export default ROUTES;

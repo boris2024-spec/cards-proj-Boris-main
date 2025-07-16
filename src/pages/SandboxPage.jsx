@@ -10,7 +10,7 @@ import {
   Zoom,
   Grid
 } from "@mui/material";
-import { BusinessCenter, ArrowUpward } from "@mui/icons-material";
+import { BusinessCenter, ArrowUpward, CardTravel } from "@mui/icons-material";
 import axios from "axios";
 import { useCurrentUser } from "../users/providers/UserProvider";
 import { useTheme } from "../providers/CustomThemeProvider";
@@ -151,7 +151,7 @@ function SandboxPage() {
             flexDirection: { xs: 'column', sm: 'row' },
             textAlign: { xs: 'center', sm: 'left' }
           }}>
-            <BusinessCenter sx={{ fontSize: { xs: 32, md: 40 } }} />
+            <CardTravel sx={{ fontSize: { xs: 32, md: 40 } }} />
             <Box>
               <Typography
                 variant="h4"
