@@ -21,6 +21,8 @@ import { useSnack } from "../providers/SnackbarProvider";
 import { useCurrentUser } from "../users/providers/UserProvider";
 import { useSearchParams } from "react-router-dom";
 import { useTheme } from "../providers/CustomThemeProvider";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 function CardsPage() {
   const [cards, setCards] = useState([]);
@@ -160,6 +162,13 @@ function CardsPage() {
 
   const searchQuery = searchParams.get("q");
 
+  // Добавьте массив вариантов сортировки перед компонентом CardsPage
+  const sortOptions = [
+    { label: "No sorting", value: "default" },
+    { label: "By likes", value: "likes" },
+    { label: "By date added", value: "date" },
+  ];
+
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: isDark ? 'grey.800' : 'grey.50' }}>
       {/* Page Header */}
@@ -203,51 +212,52 @@ function CardsPage() {
             </Box>
             {/* Фильтр карточек */}
             <Box sx={{ ml: { xs: 0, sm: 'auto' }, mt: { xs: 2, sm: 0 }, minWidth: 180 }}>
-              <FormControl fullWidth size="small" variant="outlined"
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    color: 'white',
-                    '& fieldset': {
-                      borderColor: 'white',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: 'white',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: 'white',
-                    },
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: 'white',
-                  },
-                  '& .MuiSvgIcon-root': {
-                    color: 'white',
-                  },
+              <Autocomplete
+                options={sortOptions}
+                getOptionLabel={(option) => option.label}
+                value={sortOptions.find(opt => opt.value === filter) || sortOptions[0]}
+                onChange={(event, newValue) => {
+                  setFilter(newValue ? newValue.value : "default");
                 }}
-              >
-                <InputLabel id="filter-label">Sort by</InputLabel>
-                <Select
-                  labelId="filter-label"
-                  value={filter}
-                  label="Sort by"
-                  onChange={e => setFilter(e.target.value)}
-                  sx={{
-                    color: 'white',
-                  }}
-                  MenuProps={{
-                    PaperProps: {
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Sort by"
+                    variant="outlined"
+                    size="small"
+                    InputLabelProps={{
                       sx: {
-                        backgroundColor: isDark ? 'grey.900' : 'primary.main',
                         color: 'white',
+                        '&.Mui-focused': {
+                          color: 'white',
+                        },
                       }
-                    }
-                  }}
-                >
-                  <MenuItem value="default">No sorting</MenuItem>
-                  <MenuItem value="likes">By likes</MenuItem>
-                  <MenuItem value="date">By date added</MenuItem>
-                </Select>
-              </FormControl>
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        color: 'white',
+                        '& fieldset': {
+                          borderColor: 'white',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'white',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'white',
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: 'white',
+                      },
+                      '& .MuiSvgIcon-root': {
+                        color: 'white',
+                      },
+                    }}
+                  />
+                )}
+                sx={{ width: 200 }}
+                disableClearable
+              />
             </Box>
           </Box>
         </Container>

@@ -123,7 +123,7 @@ function CreateCard({ onCardCreated }) {
         handleCreateOrUpdateCard
     );
 
-    if (loading) return <div>Загрузка...</div>;
+    if (loading) return <div>loading...</div>;
 
     return (
         <Form
