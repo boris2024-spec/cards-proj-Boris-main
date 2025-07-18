@@ -228,7 +228,18 @@ function CardsPage() {
                   onChange={(e) => setFilter(e.target.value)}
                   sx={{
                     color: 'white',
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'white',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'white',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'white',
+                    },
+                    '& .MuiSelect-icon': {
+                      color: 'white',
+                    },
                   }}
                 >
                   {sortOptions.map((option) => (
