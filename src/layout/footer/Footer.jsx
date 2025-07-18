@@ -15,7 +15,8 @@ import {
   LinkedIn,
   Email,
   Phone,
-  LocationOn
+  LocationOn,
+  Badge as BadgeIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
@@ -29,7 +30,7 @@ function Footer() {
     { icon: <Home />, label: "Home", route: ROUTES.root },
     { icon: <Info />, label: "About", route: ROUTES.about },
     { icon: <Favorite />, label: "Favorites", route: ROUTES.favorite },
-    { icon: <Science />, label: "Sandbox", route: ROUTES.sandbox },
+    { icon: <BadgeIcon />, label: "Sandbox", route: ROUTES.sandbox },
 
   ];
 

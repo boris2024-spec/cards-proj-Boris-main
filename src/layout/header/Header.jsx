@@ -39,7 +39,8 @@ import {
   LinkedIn,
   Email,
   Phone,
-  LocationOn
+  LocationOn,
+  Badge as BadgeIcon // импортирую BadgeIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
@@ -94,7 +95,7 @@ function Header() {
     { label: 'Home', path: ROUTES.root, icon: <Home /> },
     { label: 'About', path: ROUTES.about, icon: <Info /> },
     { label: 'Favorite Cards', path: ROUTES.favorite, icon: <Favorite /> },
-    { label: 'My Cards', path: ROUTES.sandbox, icon: <Science /> },
+    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon /> }, // меняю иконку на BadgeIcon
   ];
 
   const authItems = user ? [] : [
