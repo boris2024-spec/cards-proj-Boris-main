@@ -1,3 +1,5 @@
+[🌐 Demo Site (Vercel)](https://cards-proj-boris-main.vercel.app)
+
 # Business Cards Management System 
 
 A modern React web application for managing and displaying business cards with a responsive design and comprehensive user management system.
@@ -174,3 +176,10 @@ This project is developed as part of a full-stack development course and is inte
 ---
 
 **Note**: This application demonstrates modern web development techniques and serves as a comprehensive example of a React-based business management system.
+
+## 📊 GitHub Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=boris2024-cards-proj-Boris-main-spec&show_icons=true&theme=radical" alt="GitHub Stats" height="150"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=boris2024-spec&layout=compact&theme=radical" alt="Top Langs" height="150"/>
+</p>

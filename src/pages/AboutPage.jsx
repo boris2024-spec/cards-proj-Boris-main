@@ -34,6 +34,10 @@ function AboutPage() {
         Whether you're a freelancer looking to showcase your skills, a startup building brand recognition, or an established company seeking
         to modernize your networking approach, our platform provides the tools and flexibility you need to succeed in today's digital marketplace.
       </p>
+
+      <p>
+        You can try our service online on modern Vercel hosting: <a href="https://cards-proj-boris-main.vercel.app" target="_blank" rel="noopener noreferrer">Demo Site</a>.
+      </p>
     </div>
   );
 }
