@@ -21,8 +21,6 @@ import { useSnack } from "../providers/SnackbarProvider";
 import { useCurrentUser } from "../users/providers/UserProvider";
 import { useSearchParams } from "react-router-dom";
 import { useTheme } from "../providers/CustomThemeProvider";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 
 function CardsPage() {
   const [cards, setCards] = useState([]);
@@ -165,8 +163,8 @@ function CardsPage() {
   // Добавьте массив вариантов сортировки перед компонентом CardsPage
   const sortOptions = [
     { label: "No sorting", value: "default" },
-    { label: "By likes", value: "likes" },
-    { label: "By date added", value: "date" },
+    { label: "likes", value: "likes" },
+    { label: "Date added", value: "date" },
   ];
 
   return (
@@ -212,52 +210,37 @@ function CardsPage() {
             </Box>
             {/* Фильтр карточек */}
             <Box sx={{ ml: { xs: 0, sm: 'auto' }, mt: { xs: 2, sm: 0 }, minWidth: 180 }}>
-              <Autocomplete
-                options={sortOptions}
-                getOptionLabel={(option) => option.label}
-                value={sortOptions.find(opt => opt.value === filter) || sortOptions[0]}
-                onChange={(event, newValue) => {
-                  setFilter(newValue ? newValue.value : "default");
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Sort by"
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps={{
-                      sx: {
-                        color: 'white',
-                        '&.Mui-focused': {
-                          color: 'white',
-                        },
-                      }
-                    }}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        color: 'white',
-                        '& fieldset': {
-                          borderColor: 'white',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: 'white',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: 'white',
-                        },
-                      },
-                      '& .MuiInputLabel-root': {
-                        color: 'white',
-                      },
-                      '& .MuiSvgIcon-root': {
-                        color: 'white',
-                      },
-                    }}
-                  />
-                )}
-                sx={{ width: 200 }}
-                disableClearable
-              />
+              <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
+                <InputLabel
+                  id="sort-select-label"
+
+                  sx={{
+                    color: 'white',
+                    '&.Mui-focused': { color: 'white' }
+                  }}
+                >Sort by
+                </InputLabel>
+                <Select
+                  labelId="sort-select-label"
+                  id="sort-select"
+                  value={filter}
+                  label="SortBy"
+                  onChange={(e) => setFilter(e.target.value)}
+                  sx={{
+                    color: 'white',
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '& .MuiSvgIcon-root': { color: 'white' }
+                  }}
+                >
+                  {sortOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Box>
           </Box>
         </Container>
