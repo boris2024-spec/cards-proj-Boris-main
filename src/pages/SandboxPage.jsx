@@ -212,9 +212,7 @@ function SandboxPage() {
           {/* My Cards Section */}
           <Grid item xs={12} md={8}>
             <Paper elevation={2} sx={{ p: 3 }}>
-              <Typography variant="h5" gutterBottom>
-                My Business Cards
-              </Typography>
+
 
               {isLoading ? (
                 <Box sx={{ textAlign: 'center', py: 4 }}>
