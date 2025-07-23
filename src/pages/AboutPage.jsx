@@ -53,7 +53,7 @@ function AboutPage() {
           You can try our service online on modern Vercel hosting: <a href="https://cards-proj-boris-main.vercel.app" target="_blank" rel="noopener noreferrer">Demo Site</a>.
         </p>
       </div>
-      <div style={{ flex: 1, display: "flex", justifyContent: "center", marginTop: isMobile ? "30px" : 0 }}>
+      <div style={{ flex: 1, display: "flex", justifyContent: "center", marginTop: isMobile ? 30 : 75 }}>
         <img src="/Batman.jpg" alt="Batman" style={{ maxWidth: "300px", width: "100%", borderRadius: "16px", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }} />
       </div>
     </div>
