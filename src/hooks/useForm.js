@@ -37,7 +37,15 @@ export default function useForm(initialForm, schemaObj, onSubmit) {
     console.log(error);
 
     if (!error) {
+      setErrors({})
       onSubmit(formDetails);
+    }
+    else {
+
+      
+      setErrors({ [error.details[0].path[0]]: error.details[0].message })
+
+
     }
   };
 
@@ -48,12 +56,19 @@ export default function useForm(initialForm, schemaObj, onSubmit) {
     return !hasErrors && allFieldsFilled;
   };
 
+  const reset = () => {
+    setFormDetails(initialForm)
+    setErrors({})
+  }
+
+
   return {
     formDetails,
     errors,
     handleChange,
     handleSubmit,
     validateForm,
+    reset
   };
 }
 

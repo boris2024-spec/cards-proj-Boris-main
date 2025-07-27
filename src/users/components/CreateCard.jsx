@@ -117,7 +117,7 @@ function CreateCard({ onCardCreated }) {
         }
     };
 
-    const { formDetails, errors, handleChange, handleSubmit } = useForm(
+    const { formDetails, errors, handleChange, handleSubmit, reset } = useForm(
         initialCardForm,
         cardSchema,
         handleCreateOrUpdateCard
@@ -128,7 +128,7 @@ function CreateCard({ onCardCreated }) {
     return (
         <Form
             onSubmit={handleSubmit}
-            onReset={() => { }}
+            onReset={reset}
             title={editMode ? "Edit card" : "Create a card"}
             styles={{ maxWidth: "600px", mx: "auto" }}
         >

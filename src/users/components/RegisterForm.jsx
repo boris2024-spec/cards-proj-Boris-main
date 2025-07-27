@@ -31,7 +31,7 @@ const handleSignup = async (userDetails) => {
 };
 
 function RegisterForm() {
-  const { formDetails, errors, handleChange, handleSubmit } = useForm(
+  const { formDetails, errors, handleChange, handleSubmit, reset } = useForm(
     initialSignupForm,
     signupSchema,
     handleSignup
@@ -42,7 +42,7 @@ function RegisterForm() {
     <Container maxWidth="sm">
       <Form
         onSubmit={handleSubmit}
-        onReset={() => { }}
+        onReset={reset}
         title={"sign up form"}
         styles={{
 
@@ -265,7 +265,7 @@ function RegisterForm() {
                 />
               }
               label="Signup as business"
-              
+
             />
           </Grid>
         </Grid>
