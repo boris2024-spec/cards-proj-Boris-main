@@ -99,18 +99,18 @@ function CreateCard({ onCardCreated }) {
                 navigate(`/card-details/${id}`);
             } else {
                 // POST-запрос для создания
-                await axios.post(
+                const response = await axios.post(
                     "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
                     cardDataForServer,
                     { headers: { "x-auth-token": token } }
                 );
                 alert('Card successfully created!');
-                navigate(`/card-details/${id}`);
+                // Получаем ID созданной карточки из ответа сервера
+                const createdCardId = response.data._id || response.data.id;
+                navigate(`/card-details/${createdCardId}`);
             }
             if (onCardCreated) {
                 onCardCreated();
-            } else {
-                navigate(`/card-details/${id}`);
             }
         } catch (error) {
             alert("Error saving card. Check your details and try again.");
