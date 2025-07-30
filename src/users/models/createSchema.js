@@ -31,12 +31,12 @@ export const cardSchema = {
         }),
     email: Joi.string().min(5).email({ tlds: false }).required(),
     web: Joi.string().min(14).uri().allow(""),
-    url: Joi.string().min(14).uri().required()
+    url: Joi.string().min(14).uri().allow("")
         .messages({
             'string.uri': 'Image URL must be a valid URL',
             'string.min': 'Image URL must be at least 14 characters'
         }),
-    alt: Joi.string().min(2).max(256).required(),
+    alt: Joi.string().min(2).max(256).allow(""),
     state: Joi.string().allow(""),
     country: Joi.string().required(),
     city: Joi.string().required(),
@@ -46,7 +46,8 @@ export const cardSchema = {
             'number.base': 'House number must be a number',
             'number.min': 'House number must be at least 1'
         }),
-    zip: Joi.number().allow("", null)
+    zip: Joi.string().allow("").pattern(/^\d*$/).optional()
+
 };
 
 
