@@ -9,12 +9,14 @@ import { initialCardForm, cardSchema } from "../models/createSchema";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCurrentUser } from "../providers/UserProvider";
+import { useSnack } from "../../providers/SnackbarProvider";
 import { useEffect, useState } from "react";
 
 function CreateCard({ onCardCreated }) {
     const navigate = useNavigate();
     const { token } = useCurrentUser();
     const { id } = useParams();
+    const setSnack = useSnack();
     const [loading, setLoading] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [cardData, setCardData] = useState(null);
@@ -30,11 +32,30 @@ function CreateCard({ onCardCreated }) {
                     setCardData(data);
                     // Заполняем форму
                     handleFillForm(data);
+                    setSnack('success', 'Card data loaded successfully');
                 })
-                .catch(() => alert('Error loading card data'))
+                .catch((error) => {
+                    console.error('Error loading card data:', error);
+                    let errorMessage = 'Error loading card data';
+
+                    if (error.response) {
+                        if (error.response.status === 404) {
+                            errorMessage = 'Card not found';
+                        } else if (error.response.status === 401) {
+                            errorMessage = 'You are not authorized to view this card';
+                        } else if (error.response.status === 403) {
+                            errorMessage = 'You don\'t have permission to edit this card';
+                        }
+                    } else if (error.request) {
+                        errorMessage = 'Network error. Please check your connection.';
+                    }
+
+                    setSnack('error', errorMessage);
+                    navigate('/sandbox'); // Перенаправляем обратно к списку карточек
+                })
                 .finally(() => setLoading(false));
         }
-    }, [id]);
+    }, [id, setSnack, navigate]);
 
     const handleFillForm = (data) => {
         // Преобразуем данные карточки в формат формы
@@ -62,31 +83,57 @@ function CreateCard({ onCardCreated }) {
 
     const handleCreateOrUpdateCard = async (cardData) => {
         try {
+            // Проверяем авторизацию
+            if (!token) {
+                setSnack('error', 'You must be logged in to create or edit cards');
+                return;
+            }
+
+            // Проверяем наличие обязательных полей
+            if (!cardData.title || !cardData.subtitle || !cardData.description ||
+                !cardData.phone || !cardData.email || !cardData.country ||
+                !cardData.city || !cardData.street || !cardData.houseNumber) {
+                setSnack('error', 'Please fill in all required fields');
+                return;
+            }
+
+            // Преобразуем houseNumber в число
+            const houseNumber = parseInt(cardData.houseNumber);
+            if (isNaN(houseNumber) || houseNumber < 1) {
+                setSnack('error', 'House number must be a valid number greater than 0');
+                return;
+            }
+
+            // Преобразуем zip в число, если оно указано
+            let zip = null;
+            if (cardData.zip && cardData.zip.trim() !== '') {
+                zip = parseInt(cardData.zip);
+                if (isNaN(zip)) {
+                    setSnack('error', 'ZIP code must be a valid number');
+                    return;
+                }
+            }
+
             const cardDataForServer = {
-                ...cardData,
-                houseNumber: parseInt(cardData.houseNumber) || 0,
-                zip: cardData.zip ? parseInt(cardData.zip) : null,
+                title: cardData.title.trim(),
+                subtitle: cardData.subtitle.trim(),
+                description: cardData.description.trim(),
+                phone: cardData.phone.trim(),
+                email: cardData.email.trim(),
+                web: cardData.web ? cardData.web.trim() : "",
                 image: {
-                    url: cardData.url,
-                    alt: cardData.alt
+                    url: cardData.url ? cardData.url.trim() : "",
+                    alt: cardData.alt ? cardData.alt.trim() : ""
                 },
                 address: {
-                    state: cardData.state,
-                    country: cardData.country,
-                    city: cardData.city,
-                    street: cardData.street,
-                    houseNumber: parseInt(cardData.houseNumber) || 0,
-                    zip: cardData.zip ? parseInt(cardData.zip) : null
+                    state: cardData.state ? cardData.state.trim() : "",
+                    country: cardData.country.trim(),
+                    city: cardData.city.trim(),
+                    street: cardData.street.trim(),
+                    houseNumber: houseNumber,
+                    zip: zip
                 }
             };
-            delete cardDataForServer.url;
-            delete cardDataForServer.alt;
-            delete cardDataForServer.state;
-            delete cardDataForServer.country;
-            delete cardDataForServer.city;
-            delete cardDataForServer.street;
-            delete cardDataForServer.houseNumber;
-            delete cardDataForServer.zip;
 
             if (editMode && id) {
                 // PUT-запрос для обновления
@@ -95,7 +142,7 @@ function CreateCard({ onCardCreated }) {
                     cardDataForServer,
                     { headers: { "x-auth-token": token } }
                 );
-                alert('The card has been updated successfully!');
+                setSnack('success', 'The card has been updated successfully!');
                 navigate(`/card-details/${id}`);
             } else {
                 // POST-запрос для создания
@@ -104,7 +151,7 @@ function CreateCard({ onCardCreated }) {
                     cardDataForServer,
                     { headers: { "x-auth-token": token } }
                 );
-                alert('Card successfully created!');
+                setSnack('success', 'Card successfully created!');
                 // Получаем ID созданной карточки из ответа сервера
                 const createdCardId = response.data._id || response.data.id;
                 navigate(`/card-details/${createdCardId}`);
@@ -113,7 +160,32 @@ function CreateCard({ onCardCreated }) {
                 onCardCreated();
             }
         } catch (error) {
-            alert("Error saving card. Check your details and try again.");
+            console.error('Error saving card:', error);
+
+            // Более детальная обработка ошибок
+            let errorMessage = "Error saving card. Please try again.";
+
+            if (error.response) {
+                // Ошибка от сервера
+                if (error.response.status === 400) {
+                    errorMessage = "Invalid card data. Please check all required fields.";
+                } else if (error.response.status === 401) {
+                    errorMessage = "You are not authorized. Please login again.";
+                } else if (error.response.status === 403) {
+                    errorMessage = "You don't have permission to perform this action.";
+                } else if (error.response.status >= 500) {
+                    errorMessage = "Server error. Please try again later.";
+                } else if (error.response.data && typeof error.response.data === 'string') {
+                    errorMessage = error.response.data;
+                } else if (error.response.data && error.response.data.message) {
+                    errorMessage = error.response.data.message;
+                }
+            } else if (error.request) {
+                // Ошибка сети
+                errorMessage = "Network error. Please check your connection and try again.";
+            }
+
+            setSnack('error', errorMessage);
         }
     };
 

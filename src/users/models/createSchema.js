@@ -16,6 +16,7 @@ export const initialCardForm = {
     street: "",
     houseNumber: "",
     zip: ""
+    
 };
 
 // Validation schema based on API requirements
@@ -47,6 +48,9 @@ export const cardSchema = {
             'number.min': 'House number must be at least 1'
         }),
     zip: Joi.string().allow("").pattern(/^\d*$/).optional()
+        .messages({
+            'string.pattern.base': 'ZIP code must contain only numbers'
+        })
 
 };
 

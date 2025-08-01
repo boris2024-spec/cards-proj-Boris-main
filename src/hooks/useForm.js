@@ -42,7 +42,7 @@ export default function useForm(initialForm, schemaObj, onSubmit) {
     }
     else {
 
-      
+
       setErrors({ [error.details[0].path[0]]: error.details[0].message })
 
 
@@ -50,10 +50,15 @@ export default function useForm(initialForm, schemaObj, onSubmit) {
   };
 
   const validateForm = () => {
-    // Проверяем, что нет ошибок и все поля заполнены
+    // Проверяем, что нет ошибок
     const hasErrors = Object.keys(errors).length > 0;
-    const allFieldsFilled = Object.values(formDetails).every((val) => val !== undefined && val !== null && val !== "");
-    return !hasErrors && allFieldsFilled;
+
+    // Проверяем, что все обязательные поля заполнены
+    // Используем Joi для определения обязательных полей
+    const { error } = schema.validate(formDetails);
+    const isValid = !error;
+
+    return !hasErrors && isValid;
   };
 
   const reset = () => {

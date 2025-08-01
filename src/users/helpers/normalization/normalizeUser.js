@@ -20,7 +20,7 @@ const normalizeUser = (userDetails) => {
       houseNumber: userDetails.houseNumber,
       zip: userDetails.zip,
     },
-    isBusiness: false,
+    isBusiness: userDetails.isBusiness,
   };
 
   return userDetailsForServer;

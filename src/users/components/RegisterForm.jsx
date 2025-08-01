@@ -6,6 +6,7 @@ import {
   Box,
   Container
 } from "@mui/material";
+import { useEffect } from "react";
 
 import useForm from "../../hooks/useForm";
 import Form from "../../components/Form";
@@ -13,15 +14,22 @@ import axios from "axios";
 import signupSchema from "../models/signupSchema";
 import initialSignupForm from "../helpers/initialForms/initialSignupForm";
 import normalizeUser from "../helpers/normalization/normalizeUser";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../../routes/routesDict";
 
-const handleSignup = async (userDetails) => {
+const handleSignup = async (userDetails, navigate) => {
+  console.log('handleSignup - userDetails.isBusiness:', userDetails.isBusiness);
+  console.log('handleSignup - full userDetails:', userDetails);
   const userDetailsForServer = normalizeUser(userDetails);
+  console.log('handleSignup - normalized userDetails:', userDetailsForServer);
   try {
     const response = await axios.post(
       "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users",
       userDetailsForServer
     );
     console.log(response);
+    // Переход на страницу логина после успешной регистрации
+    navigate(ROUTES.login);
   } catch (error) {
     console.log(error);
     if (error.response) {
@@ -31,11 +39,22 @@ const handleSignup = async (userDetails) => {
 };
 
 function RegisterForm() {
+  const navigate = useNavigate();
+
   const { formDetails, errors, handleChange, handleSubmit, reset } = useForm(
     initialSignupForm,
     signupSchema,
-    handleSignup
+    (userDetails) => handleSignup(userDetails, navigate)
   );
+
+  // Логируем текущее состояние isBusiness при каждом рендере
+  console.log('RegisterForm render - formDetails.isBusiness:', formDetails.isBusiness);
+  console.log('RegisterForm render - full formDetails:', formDetails);
+
+  // Отслеживаем изменения isBusiness
+  useEffect(() => {
+    console.log('useEffect - isBusiness changed to:', formDetails.isBusiness);
+  }, [formDetails.isBusiness]);
 
   return (
 
@@ -255,12 +274,18 @@ function RegisterForm() {
                 <Checkbox
                   name="isBusiness"
                   checked={Boolean(formDetails.isBusiness)}
-                  onChange={e => handleChange({
-                    target: {
-                      name: 'isBusiness',
-                      value: e.target.checked
-                    }
-                  })}
+                  onChange={e => {
+                    // console.log('isBusiness checkbox clicked:', e.target.checked);
+                    // console.log('Before handleChange - formDetails.isBusiness:', formDetails.isBusiness);
+                    handleChange({
+                      target: {
+                        name: 'isBusiness',
+                        value: e.target.checked
+                      }
+                    });
+                    // Убираем этот лог, так как состояние обновляется асинхронно
+                    // console.log('After handleChange - formDetails.isBusiness:', formDetails.isBusiness);
+                  }}
                   color="primary"
                 />
               }
