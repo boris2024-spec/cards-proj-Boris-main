@@ -3,7 +3,6 @@ import {
   FormControlLabel,
   Checkbox,
   TextField,
-  Box,
   Container
 } from "@mui/material";
 import { useEffect } from "react";
@@ -16,6 +15,7 @@ import initialSignupForm from "../helpers/initialForms/initialSignupForm";
 import normalizeUser from "../helpers/normalization/normalizeUser";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
+import { useTheme } from "../../providers/CustomThemeProvider";
 
 const handleSignup = async (userDetails, navigate) => {
   console.log('handleSignup - userDetails.isBusiness:', userDetails.isBusiness);
@@ -40,6 +40,7 @@ const handleSignup = async (userDetails, navigate) => {
 
 function RegisterForm() {
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   const { formDetails, errors, handleChange, handleSubmit, reset } = useForm(
     initialSignupForm,
@@ -58,22 +59,25 @@ function RegisterForm() {
 
   return (
 
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" >
       <Form
+
         onSubmit={handleSubmit}
         onReset={reset}
         title={"sign up form"}
         styles={{
 
           maxWidth: "none",
-          backgroundColor: 'white',
+          backgroundColor: isDark ? '#1e1e1e' : 'white',
           borderRadius: 2,
-          boxShadow: 3,
+          boxShadow: 5,
           p: 5,
           mx: 'auto'
         }}
       >
-        <Grid container spacing={3}>
+        <Grid container spacing={3}
+       
+          item sm={12} justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={6}>
             <TextField
               name="first"
@@ -85,6 +89,7 @@ function RegisterForm() {
               onChange={handleChange}
               value={formDetails.first}
               required
+
             />
           </Grid>
 
@@ -268,7 +273,7 @@ function RegisterForm() {
             />
           </Grid>
           {/* Чекбокс для isBusiness */}
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6} justifyContent={"flex-start"} >
             <FormControlLabel
               control={
                 <Checkbox

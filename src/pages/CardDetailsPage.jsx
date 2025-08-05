@@ -376,11 +376,23 @@ function CardDetailsPage() {
                                     gap: 2,
                                     p: 2,
                                     borderRadius: 2,
-                                    backgroundColor: isDark ? 'grey.700' : 'grey.50'
+                                    backgroundColor: isDark ? 'grey.700' : 'grey.50',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        backgroundColor: isDark ? 'grey.600' : 'grey.100',
+                                        transform: 'translateY(-1px)',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                    }
+                                }}
+                                onClick={() => {
+                                    const address = `${card.address.street} ${card.address.houseNumber}, ${card.address.city}, ${card.address.state}, ${card.address.country}`;
+                                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+                                    window.open(url, '_blank');
                                 }}
                             >
                                 <LocationOn color="primary" sx={{ mt: 0.5 }} />
-                                <Box>
+                                <Box sx={{ flex: 1 }}>
                                     <Typography variant="body1" gutterBottom>
                                         {card.address.street} {card.address.houseNumber}
                                     </Typography>
@@ -390,7 +402,40 @@ function CardDetailsPage() {
                                     <Typography variant="body1" color="text.secondary">
                                         {card.address.country} {card.address.zip}
                                     </Typography>
+
+                                    <Typography variant="body2" color="primary.main" sx={{ mt: 1, fontWeight: 500 }}>
+                                        Click to view on Google Maps
+                                    </Typography>
                                 </Box>
+                            </Box>
+
+                            {/* Embedded Map */}
+                            <Box sx={{ mt: 3 }}>
+                                <Typography variant="h6" gutterBottom>
+                                    Location Map
+                                </Typography>
+                                <Box
+                                    sx={{
+                                        borderRadius: 2,
+                                        overflow: 'hidden',
+                                        border: '2px solid',
+                                        borderColor: isDark ? 'grey.600' : 'grey.300',
+                                        backgroundColor: isDark ? 'grey.800' : 'grey.100',
+                                        height: 350
+                                    }}
+                                >
+                                    <iframe
+                                        width="100%"
+                                        height="100%"
+
+                                        src={`https://maps.google.com/maps?width=100%25&height=350&hl=en&q=${encodeURIComponent(
+                                            `${card.address.street} ${card.address.houseNumber}, ${card.address.city}, ${card.address.state}, ${card.address.country}`
+                                        )}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                                        title="Business Location Map"
+                                        style={{ border: 0 }}
+                                    />
+                                </Box>
+
                             </Box>
 
                             {/* Action Buttons */}
