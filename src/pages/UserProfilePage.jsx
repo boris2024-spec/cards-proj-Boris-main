@@ -122,18 +122,18 @@ function UserProfilePage() {
                         mb: 4,
                     }}
                 >
-                    <Avatar
-                        sx={{
+                    <img
+                        src="https://avatar.iran.liara.run/public"
+                        alt="User Avatar"
+                        style={{
                             width: 120,
                             height: 120,
-                            mb: 2,
-                            bgcolor: theme.palette.primary.main,
-                            fontSize: '3rem',
+                            borderRadius: '50%',
+                            marginBottom: 16,
+                            objectFit: 'cover',
+                            border: `3px solid ${theme.palette.primary.main}`
                         }}
-                        src={user.image?.url}
-                    >
-                        {!user.image?.url && <UserIcon sx={{ fontSize: '4rem' }} />}
-                    </Avatar>
+                    />
 
                     <Typography
                         variant="h4"
