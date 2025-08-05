@@ -102,7 +102,7 @@ function UserProfilePage() {
     };
 
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Container maxWidth="md" sx={{ py: 4 }}>
             <Paper
                 elevation={3}
                 sx={{
