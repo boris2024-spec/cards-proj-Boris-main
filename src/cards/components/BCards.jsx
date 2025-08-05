@@ -35,14 +35,14 @@ function BCards({ cards, toggleLike, onDelete }) {
             <Typography
               variant="h5"
               gutterBottom
-              color="text.secondary"
+              color="grey.700"
               fontWeight="medium"
             >
               No Business Cards Available
             </Typography>
             <Typography
               variant="body1"
-              color="text.secondary"
+              color="grey.700"
               sx={{ maxWidth: 400, mx: 'auto' }}
             >
               There are currently no business cards to display.
@@ -57,7 +57,7 @@ function BCards({ cards, toggleLike, onDelete }) {
   return (
     <Container maxWidth="xl" sx={{ py: { xs: 2, md: 3 }, px: { xs: 1, sm: 2 } }}>
       {/* Cards Grid - Responsive design */}
-      <Grid container spacing={{ xs: 2, sm: 2, md: 3 }} sx={{ mb: 4, justifyContent: 'center' }}>
+      <Grid container spacing={{ xs: 3, sm: 2, md: 3 }} sx={{ mb: 4, justifyContent: 'center' }}>
         {cards.map((card) => (
           <Grid
             item

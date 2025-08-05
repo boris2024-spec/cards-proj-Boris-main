@@ -170,7 +170,7 @@ function CardDetailsPage() {
             backgroundColor: isDark ? 'grey.900' : 'grey.50',
             py: 3
         }}>
-            <Container maxWidth="lg">
+            <Container maxWidth="xl" sx={{ mb: 4 }}>
                 {/* Header */}
                 <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
                     <IconButton
@@ -203,7 +203,7 @@ function CardDetailsPage() {
                                 borderRadius: 3,
                                 overflow: 'hidden',
                                 position: 'sticky',
-                                top: 20
+                                top: 100
                             }}
                         >
                             <CardMedia
@@ -239,7 +239,7 @@ function CardDetailsPage() {
                     </Grid>
 
                     {/* Business Details */}
-                    <Grid item xs={12} md={7}>
+                    <Grid item xs={12} md={7} maxWidth="md">
                         <Paper
                             elevation={3}
                             sx={{
