@@ -192,7 +192,7 @@ function Header() {
         {user ? (
           <>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => handleNavigation(ROUTES.userProfile)}>
                 <ListItemIcon>
                   <AccountCircle />
                 </ListItemIcon>
@@ -373,6 +373,7 @@ function Header() {
 
                     <IconButton
                       color="inherit"
+                      onClick={() => navigate(ROUTES.userProfile)}
                       sx={{
                         '&:hover': {
                           backgroundColor: 'rgba(255, 255, 255, 0.1)'

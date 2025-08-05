@@ -8,6 +8,8 @@ import LoginPage from "./../pages/LoginPage";
 import RegisterPage from "./../pages/RegisterPage";
 import ErrorPage from "../pages/ErrorPage";
 import CardDetailsPage from "../pages/CardDetailsPage";
+import UserProfilePage from "../pages/UserProfilePage";
+import EditProfilePage from "../pages/EditProfilePage";
 import ROUTES from "./routesDict";
 import SandboxPage from "../pages/SandboxPage";
 import CreateCard from "../users/components/CreateCard";
@@ -23,6 +25,8 @@ function Router() {
       <Route path={ROUTES.sandbox} element={<SandboxPage />} />
       <Route path={ROUTES.cardDetails} element={<CardDetailsPage />} />
       <Route path={ROUTES.editCard} element={<CreateCard />} />
+      <Route path={ROUTES.userProfile} element={<UserProfilePage />} />
+      <Route path={ROUTES.editProfile} element={<EditProfilePage />} />
 
       <Route path="/*" element={<ErrorPage />} />
     </Routes>
