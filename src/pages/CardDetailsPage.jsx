@@ -353,7 +353,7 @@ function CardDetailsPage() {
                                                 <Typography variant="body2" color="text.secondary">
                                                     Website
                                                 </Typography>
-                                                <Typography variant="body1">
+                                                <Typography variant="body1" sx={{ wordBreak: 'break-all', wordWrap: 'break-word' }}>
                                                     {card.web}
                                                 </Typography>
                                             </Box>
