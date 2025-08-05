@@ -35,7 +35,7 @@ function Footer() {
   ];
 
   const socialLinks = [
-    { icon: <GitHub />, label: "GitHub", url: "https://github.com" },
+    { icon: <GitHub />, label: "GitHub", url: "https://github.com/boris2024-spec/cards-proj-Boris-main" },
     { icon: <LinkedIn />, label: "LinkedIn", url: "https://linkedin.com" },
     { icon: <Email />, label: "Contact", url: "mailto:contact@businesscards.com" },
     { icon: <Phone />, label: "Phone", url: "tel:0545555555" },

@@ -306,29 +306,29 @@ function Header() {
               size="small"
               sx={{
                 mr: 2,
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backgroundColor: '#fff',
                 borderRadius: 1,
                 '& .MuiOutlinedInput-root': {
-                  color: 'white',
+                  color: 'black',
                   '& fieldset': {
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    borderColor: 'rgba(0, 0, 0, 0.3)',
                   },
                   '&:hover fieldset': {
-                    borderColor: 'rgba(255, 255, 255, 0.5)',
+                    borderColor: 'rgba(0, 0, 0, 0.5)',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: 'rgba(255, 255, 255, 0.7)',
+                    borderColor: 'rgba(0, 0, 0, 0.7)',
                   },
                 },
                 '& .MuiInputBase-input::placeholder': {
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: 'rgba(0, 0, 0, 0.6)',
                   opacity: 1,
                 },
               }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                    <Search sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
                   </InputAdornment>
                 ),
               }}

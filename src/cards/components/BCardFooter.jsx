@@ -63,94 +63,126 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete, ownerId }) {
       <CardActions
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: user?._id === ownerId ? "space-between" : "space-between",
           px: 2,
           py: 1
         }}
         disableSpacing
       >
-        {/* Management Actions */}
-        <Box sx={{ display: 'flex', gap: 0.5, minWidth: 80 }}>
-          {user ? (
-            <>
-              {user._id === ownerId && (
-                <Tooltip title="Delete Card" arrow>
-                  <IconButton
-                    onClick={handleDelete}
-                    size="small"
-                    sx={{
-                      color: 'error.main',
-                      '&:hover': {
-                        backgroundColor: 'error.light',
-                        color: 'white'
-                      }
-                    }}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              )}
-              {user._id === ownerId && (
-                <Tooltip title="Edit Card" arrow>
-                  <IconButton
-                    onClick={handleEdit}
-                    size="small"
-                    sx={{
-                      color: 'primary.main',
-                      '&:hover': {
-                        backgroundColor: 'primary.light',
-                        color: 'white'
-                      }
-                    }}
-                  >
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </>
-          ) : (
-            // Пустой Box-заполнитель, чтобы сохранить ширину
-            <Box sx={{ width: 64, height: 32 }} />
-          )}
-        </Box>
+        {user?._id === ownerId ? (
+          // Обычное расположение для собственных карточек
+          <>
+            {/* Management Actions */}
+            <Box sx={{ display: 'flex', gap: 0.5, minWidth: 80 }}>
+              <Tooltip title="Delete Card" arrow>
+                <IconButton
+                  onClick={handleDelete}
+                  size="small"
+                  sx={{
+                    color: 'error.main',
+                    '&:hover': {
+                      backgroundColor: 'error.light',
+                      color: 'white'
+                    }
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit Card" arrow>
+                <IconButton
+                  onClick={handleEdit}
+                  size="small"
+                  sx={{
+                    color: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'primary.light',
+                      color: 'white'
+                    }
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
 
-        {/* Interaction Actions */}
-        <Box sx={{ display: 'flex', gap: 0.5 }}>
-          <Tooltip title="Call Business" arrow>
-            <IconButton
-              onClick={handleCallClick}
-              size="small"
-              sx={{
-                color: 'success.main',
-                '&:hover': {
-                  backgroundColor: 'success.light',
-                  color: 'white'
-                }
-              }}
-            >
-              <CallIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+            {/* Interaction Actions */}
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
+              <Tooltip title="Call Business" arrow>
+                <IconButton
+                  onClick={handleCallClick}
+                  size="small"
+                  sx={{
+                    color: 'success.main',
+                    '&:hover': {
+                      backgroundColor: 'success.light',
+                      color: 'white'
+                    }
+                  }}
+                >
+                  <CallIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
 
-          <Tooltip title={isLiked ? "Remove from Favorites" : "Add to Favorites"} arrow>
-            <IconButton
-              onClick={handleLikeToggle}
-              size="small"
-              sx={{
-                color: isLiked ? 'error.main' : 'grey.500',
-                '&:hover': {
-                  backgroundColor: isLiked ? 'error.light' : 'grey.100',
-                  color: isLiked ? 'white' : 'error.main'
+              <Tooltip title={isLiked ? "Remove from Favorites" : "Add to Favorites"} arrow>
+                <IconButton
+                  onClick={handleLikeToggle}
+                  size="small"
+                  sx={{
+                    color: isLiked ? 'error.main' : 'grey.500',
+                    '&:hover': {
+                      backgroundColor: isLiked ? 'error.light' : 'grey.100',
+                      color: isLiked ? 'white' : 'error.main'
+                    }
+                  }}
+                >
+                  {isLiked ?
+                    <FavoriteIcon fontSize="small" /> :
+                    <FavoriteBorderIcon fontSize="small" />
+                  }
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </>
+        ) : (
+          // Кнопки по краям для чужих карточек
+          <>
+            <Tooltip title="Call Business" arrow>
+              <IconButton
+                onClick={handleCallClick}
+                size="small"
+                sx={{
+                  color: 'success.main',
+                  '&:hover': {
+                    backgroundColor: 'success.light',
+                    color: 'white'
+                  }
+                }}
+              >
+                <CallIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title={isLiked ? "Remove from Favorites" : "Add to Favorites"} arrow>
+              <IconButton
+                onClick={handleLikeToggle}
+                size="small"
+                sx={{
+                  color: isLiked ? 'error.main' : 'grey.500',
+                  '&:hover': {
+                    backgroundColor: isLiked ? 'error.light' : 'grey.100',
+                    color: isLiked ? 'white' : 'error.main'
+                  }
+                }}
+              >
+                {isLiked ?
+                  <FavoriteIcon fontSize="small" /> :
+                  <FavoriteBorderIcon fontSize="small" />
                 }
-              }}
-            >
-              {isLiked ?
-                <FavoriteIcon fontSize="small" /> :
-                <FavoriteBorderIcon fontSize="small" />
-              }
-            </IconButton>
-          </Tooltip>
-        </Box>
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
       </CardActions>
     </>
   );

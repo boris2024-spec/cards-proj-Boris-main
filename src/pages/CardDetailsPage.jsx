@@ -31,6 +31,7 @@ import axios from 'axios';
 import { useSnack } from '../providers/SnackbarProvider';
 import { useCurrentUser } from '../users/providers/UserProvider';
 import { useTheme } from '../providers/CustomThemeProvider';
+import ROUTES from '../routes/routesDict';
 
 function CardDetailsPage() {
     const { id } = useParams();
@@ -149,9 +150,11 @@ function CardDetailsPage() {
                     {error || 'Business card not found'}
                 </Alert>
                 <Button
+
+
                     variant="contained"
                     startIcon={<ArrowBack />}
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(ROUTES.root)}
                 >
                     Go Back
                 </Button>
@@ -171,9 +174,11 @@ function CardDetailsPage() {
                 {/* Header */}
                 <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
                     <IconButton
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate(ROUTES.root)}
                         sx={{
                             backgroundColor: isDark ? 'grey.800' : 'white',
+                            border: '2px solid',
+                            borderColor: 'grey.300',
                             '&:hover': {
                                 backgroundColor: isDark ? 'grey.700' : 'grey.100'
                             }
@@ -275,6 +280,7 @@ function CardDetailsPage() {
                                             borderRadius: 2,
                                             backgroundColor: isDark ? 'grey.700' : 'grey.50',
                                             cursor: 'pointer',
+                                            minHeight: 80,
                                             '&:hover': {
                                                 backgroundColor: isDark ? 'grey.600' : 'grey.100'
                                             }
@@ -304,6 +310,7 @@ function CardDetailsPage() {
                                             borderRadius: 2,
                                             backgroundColor: isDark ? 'grey.700' : 'grey.50',
                                             cursor: 'pointer',
+                                            minHeight: 80,
                                             '&:hover': {
                                                 backgroundColor: isDark ? 'grey.600' : 'grey.100'
                                             }
@@ -334,6 +341,7 @@ function CardDetailsPage() {
                                                 borderRadius: 2,
                                                 backgroundColor: isDark ? 'grey.700' : 'grey.50',
                                                 cursor: 'pointer',
+                                                minHeight: 80,
                                                 '&:hover': {
                                                     backgroundColor: isDark ? 'grey.600' : 'grey.100'
                                                 }
@@ -392,6 +400,7 @@ function CardDetailsPage() {
                                     startIcon={<Phone />}
                                     onClick={() => handleCall(card.phone)}
                                     size="large"
+                                    sx={{ minWidth: 150, flex: { xs: '1 1 100%', sm: '0 1 auto' } }}
                                 >
                                     Call Now
                                 </Button>
@@ -400,6 +409,7 @@ function CardDetailsPage() {
                                     startIcon={<Email />}
                                     onClick={() => handleEmail(card.email)}
                                     size="large"
+                                    sx={{ minWidth: 150, flex: { xs: '1 1 100%', sm: '0 1 auto' } }}
                                 >
                                     Send Email
                                 </Button>
@@ -409,6 +419,7 @@ function CardDetailsPage() {
                                         startIcon={<Language />}
                                         onClick={() => handleWebsite(card.web)}
                                         size="large"
+                                        sx={{ minWidth: 150, flex: { xs: '1 1 100%', sm: '0 1 auto' } }}
                                     >
                                         Visit Website
                                     </Button>

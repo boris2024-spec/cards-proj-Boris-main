@@ -49,12 +49,15 @@ function LoginForm() {
       }}
     >
       <Form
+      
         onSubmit={handleSubmit}
         onReset={() => { }}
         title={"sign in form"}
         styles={{ maxWidth: "600px" }}
       >
         <TextField
+          fullWidth
+          variant="outlined"
           name="email"
           label="email"
           error={errors.email}
@@ -62,6 +65,8 @@ function LoginForm() {
           value={formDetails.email}
         />
         <TextField
+          fullWidth
+          variant="outlined"
           name="password"
           label="password"
           error={errors.password}

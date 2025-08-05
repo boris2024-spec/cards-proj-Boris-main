@@ -202,10 +202,10 @@ function CreateCard({ onCardCreated }) {
             onSubmit={handleSubmit}
             onReset={reset}
             title={editMode ? "Edit card" : "Create a card"}
-            styles={{ maxWidth: "600px", mx: "auto" }}
+            styles={{ maxWidth: "600px" }}
         >
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm:6 }}>
                     <TextField
                         name="title"
                         label="Title"
@@ -219,7 +219,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="subtitle"
                         label="Subtitle"
@@ -233,7 +233,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="description"
                         label="Description"
@@ -247,7 +247,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="phone"
                         label="Phone"
@@ -261,7 +261,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="email"
                         label="Email"
@@ -276,7 +276,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="web"
                         label="Web"
@@ -289,7 +289,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="url"
                         label="Image url"
@@ -302,7 +302,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="alt"
                         label="Image alt"
@@ -315,7 +315,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="state"
                         label="State"
@@ -328,7 +328,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="country"
                         label="Country"
@@ -342,7 +342,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="city"
                         label="City"
@@ -356,7 +356,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="street"
                         label="Street"
@@ -370,7 +370,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="houseNumber"
                         label="House number"
@@ -384,7 +384,7 @@ function CreateCard({ onCardCreated }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="zip"
                         label="Zip"

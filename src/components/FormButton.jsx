@@ -9,6 +9,7 @@ const FormButton = ({
   onClick,
   disabled = false,
   node,
+  fullWidth = false,
 }) => {
   return (
     <Button

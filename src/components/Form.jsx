@@ -27,6 +27,7 @@ const Form = ({
       onSubmit={e => { e.preventDefault(); onSubmit(); }}
       autoComplete="off"
       noValidate
+      width={"100%"}
     >
       <Typography align="center" variant="h5" component="h1" mb={2}>
         {title.toUpperCase()}
@@ -37,7 +38,7 @@ const Form = ({
       </Grid>
 
       <Grid container spacing={1} my={2} direction="row" width="100%" justifyContent="center" alignItems="center">
-        <Grid item xs={12} sm={4} display="flex" justifyContent="center">
+        <Grid size={{ xs: 12, sm: 6 }} display="flex" justifyContent="center">
           <FormButton
             node="cancel"
             color="error"
@@ -47,7 +48,7 @@ const Form = ({
             onClick={() => navigate(to)}
           />
         </Grid>
-        <Grid item xs={12} sm={4} display="flex" justifyContent="center">
+        <Grid size={{ xs: 12, sm: 6 }} display="flex" justifyContent="center">
           <FormButton
             node={<LoopIcon />}
             variant="outlined"
@@ -56,7 +57,7 @@ const Form = ({
             onClick={onReset}
           />
         </Grid>
-        <Grid item xs={12} sm={4} display="flex" justifyContent="center">
+        <Grid size={{ xs: 12, sm: 12 }} display="flex" justifyContent="center">
           <FormButton
             node="Submit"
             onClick={e => { e.preventDefault(); onSubmit(); }}
