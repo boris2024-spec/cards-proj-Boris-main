@@ -437,7 +437,7 @@ function CardDetailsPage() {
                                 </Box>
 
                             </Box>
-
+                            <Divider sx={{ my: 3 }} />
                             {/* Action Buttons */}
                             <Box sx={{ mt: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                                 <Button
