@@ -2,13 +2,16 @@ import { Card, CardMedia, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import BCardBody from "./BCardBody";
 import BCardFooter from "./BCardFooter";
+import CardActionArea from '@mui/material/CardActionArea';
 
 function BCard({ card, toggleLike, onDelete }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/card-details/${card._id}`);
-  };
+    setTimeout(() => {
+      navigate(`/card-details/${card._id}`);
+    }, 300); // Delay to allow for hover effect
+  }
 
   return (
     <Card
@@ -30,32 +33,34 @@ function BCard({ card, toggleLike, onDelete }) {
       elevation={2}
       onClick={handleCardClick}
     >
-      <CardMedia
-        sx={{
-          height: 200,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-        image={card.image.url}
-        title={`${card.title} - Business Logo`}
-      />
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <BCardBody
-          title={card.title}
-          subtitle={card.subtitle}
-          bizNumber={card.bizNumber}
-          phone={card.phone}
-          city={card.address.city}
+      <CardActionArea>
+        <CardMedia
+          sx={{
+            height: 200,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+          image={card.image.url}
+          title={`${card.title} - Business Logo`}
         />
-        <BCardFooter
-          toggleLike={toggleLike}
-          cardId={card._id}
-          likes={card.likes}
-          phone={card.phone}
-          onDelete={onDelete}
-          ownerId={card.user_id || card.userId || card.owner}
-        />
-      </Box>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <BCardBody
+            title={card.title}
+            subtitle={card.subtitle}
+            bizNumber={card.bizNumber}
+            phone={card.phone}
+            city={card.address.city}
+          />
+          <BCardFooter
+            toggleLike={toggleLike}
+            cardId={card._id}
+            likes={card.likes}
+            phone={card.phone}
+            onDelete={onDelete}
+            ownerId={card.user_id || card.userId || card.owner}
+          />
+        </Box>
+      </CardActionArea>
     </Card>
   );
 }
