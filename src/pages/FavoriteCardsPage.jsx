@@ -229,6 +229,7 @@ function FavoriteCardsPage() {
             <Favorite color="error" sx={{ fontSize: { xs: 32, md: 40 } }} />
             <Box>
               <Typography
+              
                 variant="h4"
                 component="h1"
                 gutterBottom

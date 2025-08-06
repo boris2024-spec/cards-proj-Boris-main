@@ -205,7 +205,7 @@ function CreateCard({ onCardCreated }) {
             styles={{ maxWidth: "600px" }}
         >
             <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm:6 }}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                     <TextField
                         name="title"
                         label="Title"
@@ -398,6 +398,8 @@ function CreateCard({ onCardCreated }) {
                 </Grid>
             </Grid>
         </Form>
+
+
     );
 }
 

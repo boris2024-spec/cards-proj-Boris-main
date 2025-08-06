@@ -14,6 +14,7 @@ function BCard({ card, toggleLike, onDelete }) {
   }
 
   return (
+    <CardActionArea>
     <Card
       sx={{
 
@@ -33,7 +34,7 @@ function BCard({ card, toggleLike, onDelete }) {
       elevation={2}
       onClick={handleCardClick}
     >
-      <CardActionArea>
+    
         <CardMedia
           sx={{
             height: 200,
@@ -60,8 +61,9 @@ function BCard({ card, toggleLike, onDelete }) {
             ownerId={card.user_id || card.userId || card.owner}
           />
         </Box>
-      </CardActionArea>
+      
     </Card>
+    </CardActionArea >
   );
 }
 
