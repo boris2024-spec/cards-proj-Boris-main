@@ -51,44 +51,67 @@ This application provides a complete business card management solution with user
 
 ```
 src/
-├── cards/                  # Business card components
+├── App.jsx                  # Root application component
+├── main.jsx                 # Entry point
+├── cards/
 │   └── components/
-│       ├── BCard.jsx       # Individual card component
-│       ├── BCardBody.jsx   # Card content section
-│       ├── BCardFooter.jsx # Card actions section
-│       └── BCards.jsx      # Cards grid with pagination
-├── components/             # Shared UI components
-│   ├── Form.jsx           # Generic form component
-│   └── FormButton.jsx     # Form button component
-├── hooks/                  # Custom React hooks
-│   └── useForm.js         # Form management hook
-├── layout/                 # Layout components
-│   ├── Layout.jsx         # Main layout wrapper
-│   ├── footer/            # Footer components
-│   ├── header/            # Header and navigation
-│   └── main/              # Main content area
-├── pages/                  # Page components
-│   ├── AboutPage.jsx      # About page
-│   ├── CardsPage.jsx      # Main cards directory
-│   ├── ErrorPage.jsx      # Error handling page
-│   ├── FavoriteCardsPage.jsx  # User favorites
-│   ├── LoginPage.jsx      # User login
-│   ├── MyCardsPage.jsx    # User's cards management
-│   ├── RegisterPage.jsx   # User registration
-│   └── SandboxPage.jsx    # Development testing
-├── providers/              # React context providers
-│   ├── CustomThemeProvider.jsx  # Theme management
-│   ├── SnackbarProvider.jsx     # Notifications
-│   └── UserProvider.jsx         # User state management
-├── routes/                 # Routing configuration
-│   ├── Router.jsx         # Main router setup
-│   └── routesDict.js      # Route definitions
-└── users/                  # User-related components
-    ├── components/        # User forms
-    ├── helpers/           # Utility functions
-    ├── models/            # Validation schemas
-    ├── providers/         # User context
-    └── services/          # Local storage utilities
+│       ├── BCard.jsx        # Business card component
+│       ├── BCardBody.jsx    # Card content section
+│       ├── BCardFooter.jsx  # Card actions section
+│       └── BCards.jsx       # Cards grid with pagination
+├── components/
+│   ├── Form.jsx             # Generic form component
+│   ├── FormButton.jsx       # Form button component
+│   └── Input.jsx            # Input field component
+├── hooks/
+│   └── useForm.js           # Custom hook for form management
+├── layout/
+│   ├── Layout.jsx           # Main layout wrapper
+│   ├── footer/
+│   │   └── Footer.jsx       # Footer component
+│   ├── header/
+│   │   ├── Header.jsx       # Header component
+│   │   └── HeaderLink.jsx   # Header navigation link
+│   └── main/
+│       └── Main.jsx         # Main content area
+├── pages/
+│   ├── AboutPage.jsx        # About page
+│   ├── CardDetailsPage.jsx  # Card details page
+│   ├── CardsPage.jsx        # Cards directory
+│   ├── EditProfilePage.jsx  # Edit profile page
+│   ├── ErrorPage.jsx        # Error page
+│   ├── FavoriteCardsPage.jsx# User's favorite cards
+│   ├── LoginPage.jsx        # User login page
+│   ├── MyCardsPage.jsx      # User's cards management
+│   ├── RegisterPage.jsx     # User registration page
+│   ├── SandboxPage.jsx      # Development sandbox
+│   └── UserProfilePage.jsx  # User profile page
+├── providers/
+│   ├── CustomThemeProvider.jsx # Theme provider
+│   ├── SnackbarProvider.jsx    # Notification provider
+│   └── UserProvider.jsx        # User state provider
+├── routes/
+│   ├── Router.jsx              # Main router setup
+│   └── routesDict.js           # Route definitions
+└── users/
+    ├── components/
+    │   ├── CreateCard.jsx      # Card creation form
+    │   ├── LoginForm.jsx       # Login form
+    │   └── RegisterForm.jsx    # Registration form
+    ├── helpers/
+    │   ├── initialForms/
+    │   │   ├── initialLoginForm.js # Initial login form values
+    │   │   └── initialSignupForm.js# Initial signup form values
+    │   └── normalization/
+    │       └── normalizeUser.js    # User data normalization
+    ├── models/
+    │   ├── createSchema.js         # Joi schema for card creation
+    │   ├── loginSchema.js          # Joi schema for login
+    │   └── signupSchema.js         # Joi schema for registration
+    ├── providers/
+    │   └── UserProvider.jsx        # User context provider
+    └── services/
+        └── localStorageService.js  # Local storage utilities
 ```
 
 ## 🚀 Getting Started
