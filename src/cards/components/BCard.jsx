@@ -23,7 +23,7 @@ function BCard({ card, toggleLike, onDelete }) {
         transition: 'all 0.3s ease',
         cursor: 'pointer',
         '&:hover': {
-          transform: 'translateY(-4px)',
+          transform: 'translateY(-10px)',
           boxShadow: 4,
         },
         borderRadius: 2,
