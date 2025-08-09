@@ -92,12 +92,38 @@ function UserProfilePage() {
         navigate(ROUTES.editProfile);
     };
 
-    const handleDeleteAccount = () => {
-        // Здесь можно добавить логику удаления аккаунта
+    const handleDeleteAccount = async () => {
         const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
         if (confirmDelete) {
-            console.log('Delete account confirmed');
-            // Логика удаления аккаунта
+            try {
+                const response = await fetch(
+                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
+                    {
+                        method: 'DELETE',
+                        headers: {
+                            "x-auth-token": token,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                if (response.ok) {
+                    alert('Account deleted successfully.');
+                    navigate(ROUTES.login);
+                } else {
+                    let errorMessage = response.statusText;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const error = await response.json();
+                        errorMessage = error.message || errorMessage;
+                    } else {
+                        const errorText = await response.text();
+                        errorMessage = errorText || errorMessage;
+                    }
+                    alert('Error deleting account: ' + errorMessage);
+                }
+            } catch (err) {
+                alert('Network error: ' + err.message);
+            }
         }
     };
 
