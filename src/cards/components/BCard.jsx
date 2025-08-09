@@ -14,12 +14,10 @@ function BCard({ card, toggleLike, onDelete }) {
   }
 
   return (
-    <CardActionArea>
     <Card
       sx={{
-
         width: { xs: 300, sm: 270 },
-        height: 400,
+        height: 460,
         display: 'flex',
         flexDirection: 'column',
         transition: 'all 0.3s ease',
@@ -32,9 +30,11 @@ function BCard({ card, toggleLike, onDelete }) {
         overflow: 'hidden'
       }}
       elevation={2}
-      onClick={handleCardClick}
     >
-    
+      <CardActionArea
+        onClick={handleCardClick}
+        sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
+      >
         <CardMedia
           sx={{
             height: 200,
@@ -44,7 +44,7 @@ function BCard({ card, toggleLike, onDelete }) {
           image={card.image.url}
           title={`${card.title} - Business Logo`}
         />
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <BCardBody
             title={card.title}
             subtitle={card.subtitle}
@@ -52,19 +52,21 @@ function BCard({ card, toggleLike, onDelete }) {
             phone={card.phone}
             city={card.address.city}
           />
-          <BCardFooter
-            toggleLike={toggleLike}
-            cardId={card._id}
-            likes={card.likes}
-            phone={card.phone}
-            onDelete={onDelete}
-            ownerId={card.user_id || card.userId || card.owner}
-          />
         </Box>
-      
+
+        <BCardFooter
+          toggleLike={toggleLike}
+          cardId={card._id}
+          likes={card.likes}
+          phone={card.phone}
+          onDelete={onDelete}
+          ownerId={card.user_id || card.userId || card.owner}
+        />
+      </CardActionArea>
     </Card>
-    </CardActionArea >
   );
+
 }
+
 
 export default BCard;
