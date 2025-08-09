@@ -123,7 +123,7 @@ function UserProfilePage() {
                     }}
                 >
                     <img
-                        src="https://avatar.iran.liara.run/public"
+                        src="https://i.pravatar.cc"
                         alt="User Avatar"
                         style={{
                             width: 120,
