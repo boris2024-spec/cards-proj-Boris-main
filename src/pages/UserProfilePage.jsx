@@ -96,6 +96,47 @@ function UserProfilePage() {
         const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
         if (confirmDelete) {
             try {
+                // 1. Получить все карточки пользователя
+                const cardsRes = await fetch(
+                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards?userId=${user._id}`,
+                    {
+                        headers: {
+                            "x-auth-token": token,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const userCards = cardsRes.ok ? await cardsRes.json() : [];
+
+                // 2. Удалить каждую карточку пользователя параллельно
+                await Promise.all(
+                    userCards.map(card =>
+                        fetch(
+                            `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${card._id}`,
+                            {
+                                method: 'DELETE',
+                                headers: {
+                                    "x-auth-token": token,
+                                    "Content-Type": "application/json",
+                                },
+                            }
+                        )
+                    )
+                );
+
+                // 3. Удалить все лайки пользователя (если API поддерживает такой эндпоинт)
+                await fetch(
+                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/likes/user/${user._id}`,
+                    {
+                        method: 'DELETE',
+                        headers: {
+                            "x-auth-token": token,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                // 4. Удалить аккаунт пользователя
                 const response = await fetch(
                     `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
                     {
@@ -107,8 +148,8 @@ function UserProfilePage() {
                     }
                 );
                 if (response.ok) {
-                    alert('Account deleted successfully.');
-                    navigate(ROUTES.login);
+                    alert('Account and all your cards/likes deleted successfully.');
+                    window.location.reload(); // Перезагрузка страницы после удаления аккаунта
                 } else {
                     let errorMessage = response.statusText;
                     const contentType = response.headers.get('content-type');
