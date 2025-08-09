@@ -10,13 +10,13 @@ function BCard({ card, toggleLike, onDelete }) {
   const handleCardClick = () => {
     setTimeout(() => {
       navigate(`/card-details/${card._id}`);
-    }, 300); // Delay to allow for hover effect
+    }, 310); // Delay to allow for hover effect
   }
 
   return (
     <Card
       sx={{
-        width: { xs: 300, sm: 270 },
+        width: { xs: 300, sm: 300 },
         height: 460,
         display: 'flex',
         flexDirection: 'column',
