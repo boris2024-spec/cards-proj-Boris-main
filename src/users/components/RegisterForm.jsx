@@ -16,8 +16,9 @@ import normalizeUser from "../helpers/normalization/normalizeUser";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
 import { useTheme } from "../../providers/CustomThemeProvider";
+import { useSnack } from "../../providers/SnackbarProvider";
 
-const handleSignup = async (userDetails, navigate) => {
+const handleSignup = async (userDetails, navigate, snack) => {
   console.log('handleSignup - userDetails.isBusiness:', userDetails.isBusiness);
   console.log('handleSignup - full userDetails:', userDetails);
   const userDetailsForServer = normalizeUser(userDetails);
@@ -28,12 +29,14 @@ const handleSignup = async (userDetails, navigate) => {
       userDetailsForServer
     );
     console.log(response);
+    // Show success message
+    snack("success", "Registration successful! You can now log in to the system.");
     // Navigate to login page after successful registration
     navigate(ROUTES.login);
   } catch (error) {
     console.log(error);
     if (error.response) {
-      alert(error.response.data);
+      snack("error", error.response.data);
     }
   }
 };
@@ -41,11 +44,12 @@ const handleSignup = async (userDetails, navigate) => {
 function RegisterForm() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const snack = useSnack();
 
   const { formDetails, errors, handleChange, handleSubmit, reset } = useForm(
     initialSignupForm,
     signupSchema,
-    (userDetails) => handleSignup(userDetails, navigate)
+    (userDetails) => handleSignup(userDetails, navigate, snack)
   );
 
   // Log current isBusiness state on each render
@@ -76,7 +80,7 @@ function RegisterForm() {
         }}
       >
         <Grid container spacing={3}
-       
+
           item sm={12} justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={6}>
             <TextField
