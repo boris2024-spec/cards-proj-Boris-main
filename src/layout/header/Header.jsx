@@ -54,6 +54,7 @@ function Header() {
   const { toggleMode, isDark } = useTheme();
   const muiTheme = useMuiTheme();
   const { user } = useCurrentUser();
+  const isBiz = Boolean(user?.isBusiness ?? user?.biz ?? false); // 👈 Добавляем флаг isBiz
   console.log("user:", user);
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,7 +96,7 @@ function Header() {
     { label: 'Home', path: ROUTES.root, icon: <Home /> },
     { label: 'About', path: ROUTES.about, icon: <Info /> },
     { label: 'Favorite Cards', path: ROUTES.favorite, icon: <Favorite /> },
-    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon /> }, // change icon to BadgeIcon
+    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon />, requireBiz: true }, // 👈 Добавляем requireBiz
   ];
 
   const authItems = user ? [] : [
@@ -161,13 +162,15 @@ function Header() {
 
       {/* Navigation Menu */}
       <List>
-        {menuItems.map((item) => (
-          <ListItem key={item.label} disablePadding>
-            <ListItemButton onClick={() => handleNavigation(item.path)}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          </ListItem>
+        {menuItems
+          .filter(item => !(item.requireBiz && !isBiz))
+          .map((item) => (
+            <ListItem key={item.label} disablePadding>
+              <ListItemButton onClick={() => handleNavigation(item.path)}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </ListItem>
         ))}
       </List>
 
@@ -272,27 +275,29 @@ function Header() {
           {/* Desktop Navigation */}
           {!isMobile && (
             <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
-              {menuItems.map((item) => (
-                <IconButton
-                  key={item.label}
-                  color="inherit"
-                  onClick={() => navigate(item.path)}
-                  sx={{
-                    textTransform: 'none',
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      transition: 'background-color 0.3s ease',
-                      borderRadius: 2
+              {menuItems
+                .filter(item => !(item.requireBiz && !isBiz))
+                .map((item) => (
+                  <IconButton
+                    key={item.label}
+                    color="inherit"
+                    onClick={() => navigate(item.path)}
+                    sx={{
+                      textTransform: 'none',
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        transition: 'background-color 0.3s ease',
+                        borderRadius: 2
 
-                    }
-                  }}
-                >
-                  {item.icon}
-                  <Typography variant="body2" sx={{ ml: 0.5 }}>
-                    {item.label}
-                  </Typography>
-                </IconButton>
+                      }
+                    }}
+                  >
+                    {item.icon}
+                    <Typography variant="body2" sx={{ ml: 0.5 }}>
+                      {item.label}
+                    </Typography>
+                  </IconButton>
               ))}
             </Box>
           )}

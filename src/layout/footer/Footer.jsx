@@ -10,7 +10,6 @@ import {
   Home,
   Info,
   Favorite,
-  Science,
   GitHub,
   LinkedIn,
   Email,
@@ -20,18 +19,20 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
+import { useCurrentUser } from "../../users/providers/UserProvider"; // ⬅️ добавили
 
 function Footer() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:1080px)');
+  const { user } = useCurrentUser(); // ⬅️ берем пользователя
+  const isBiz = Boolean(user?.isBusiness ?? user?.biz ?? false); // ⬅️ бизнес-флаг
 
   const navigationItems = [
     { icon: <Home />, label: "Home", route: ROUTES.root },
     { icon: <Info />, label: "About", route: ROUTES.about },
     { icon: <Favorite />, label: "Favorites", route: ROUTES.favorite },
-    { icon: <BadgeIcon />, label: "Sandbox", route: ROUTES.sandbox },
-
+    { icon: <BadgeIcon />, label: "My Cards", route: ROUTES.sandbox, requireBiz: true }, // ⬅️ видно только бизнесу
   ];
 
   const socialLinks = [
@@ -58,7 +59,6 @@ function Footer() {
       }}
     >
       <Container maxWidth="xl">
-        {/* Main Footer Content */}
         <Box
           sx={{
             display: 'flex',
@@ -68,32 +68,17 @@ function Footer() {
             gap: { xs: 0, md: 0 }
           }}
         >
-          {/* Logo/Brand - Hidden on mobile */}
-          <Box sx={{
-            textAlign: { xs: 'center', md: 'left' },
-            display: { xs: 'none', md: 'block' }
-          }}>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                fontWeight: 'bold',
-                color: 'primary.main',
-                mb: 0.5
-              }}
-            >
+          {/* Brand (desktop only) */}
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' }, display: { xs: 'none', md: 'block' } }}>
+            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 0.5 }}>
               Business Cards
             </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ fontSize: { xs: '0.75rem', md: '0.875rem' } }}
-            >
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', md: '0.875rem' } }}>
               Connecting businesses worldwide
             </Typography>
           </Box>
 
-          {/* Navigation Icons - Always visible */}
+          {/* Nav icons */}
           <Box
             sx={{
               display: 'flex',
@@ -102,35 +87,31 @@ function Footer() {
               justifyContent: 'center'
             }}
           >
-            {navigationItems.map((item) => (
-              <IconButton
-                key={item.label}
-                onClick={() => navigate(item.route)}
-                sx={{
-                  color: 'text.secondary',
-                  transition: 'all 0.2s ease',
-                  size: { xs: 'large', md: 'medium' },
-                  '&:hover': {
-                    color: 'primary.main',
-                    transform: 'translateY(-2px)',
-                    backgroundColor: 'action.hover'
-                  }
-                }}
-                aria-label={item.label}
-              >
-                {item.icon}
-              </IconButton>
-            ))}
+            {navigationItems
+              .filter(item => !(item.requireBiz && !isBiz)) // ⬅️ фильтр по бизнес-статусу
+              .map((item) => (
+                <IconButton
+                  key={item.label}
+                  onClick={() => navigate(item.route)}
+                  sx={{
+                    color: 'text.secondary',
+                    transition: 'all 0.2s ease',
+                    size: { xs: 'large', md: 'medium' },
+                    '&:hover': {
+                      color: 'primary.main',
+                      transform: 'translateY(-2px)',
+                      backgroundColor: 'action.hover'
+                    }
+                  }}
+                  aria-label={item.label}
+                >
+                  {item.icon}
+                </IconButton>
+              ))}
           </Box>
 
-          {/* Social Links - Hidden on mobile */}
-          <Box
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              gap: 1,
-              justifyContent: 'center'
-            }}
-          >
+          {/* Social (desktop only) */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, justifyContent: 'center' }}>
             {socialLinks.map((link) => (
               <IconButton
                 key={link.label}
