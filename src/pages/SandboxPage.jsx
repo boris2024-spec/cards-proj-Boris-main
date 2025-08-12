@@ -176,36 +176,38 @@ function SandboxPage() {
         <Grid container spacing={4} justifyContent="center">
           {/* Create Card Form */}
           <Grid item xs={12} md={8}>
-            {cards.length > 0 && !showCreateForm ? (
-              <Fab
-                color="primary"
-                size="large"
-                onClick={() => setShowCreateForm(true)}
-                sx={{
-                  width: 80,
-                  height: 80,
-                  fontSize: '2rem',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                  },
-                  transition: 'all 0.3s ease-in-out'
-                }}
-              >
-                +
-              </Fab>
-            ) : (
-              <Paper elevation={2} sx={{ p: 3 }}>
-                {cards.length > 0 && (
-                  <Fab
-                    size="small"
-                    onClick={() => setShowCreateForm(false)}
-                    sx={{ minWidth: 40, width: 40, height: 40 }}
-                  >
-                    ×
-                  </Fab>
-                )}
-                <CreateCard onCardCreated={refreshCards} />
-              </Paper>
+            {isLoading ? null : (
+              cards.length > 0 && !showCreateForm ? (
+                <Fab
+                  color="primary"
+                  size="large"
+                  onClick={() => setShowCreateForm(true)}
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    fontSize: '2rem',
+                    '&:hover': {
+                      transform: 'scale(1.1)',
+                    },
+                    transition: 'all 0.3s ease-in-out'
+                  }}
+                >
+                  +
+                </Fab>
+              ) : (
+                <Paper elevation={2} sx={{ p: 3 }}>
+                  {cards.length > 0 && (
+                    <Fab
+                      size="small"
+                      onClick={() => setShowCreateForm(false)}
+                      sx={{ minWidth: 40, width: 40, height: 40 }}
+                    >
+                      ×
+                    </Fab>
+                  )}
+                  <CreateCard onCardCreated={refreshCards} />
+                </Paper>
+              )
             )}
           </Grid>
 
