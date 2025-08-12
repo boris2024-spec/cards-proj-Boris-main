@@ -26,6 +26,7 @@ import { useCurrentUser } from '../users/providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routesDict';
 import { useSnack } from '../providers/SnackbarProvider';
+import { removeToken } from '../users/services/localStorageService';
 
 function UserProfilePage() {
     const { user, token } = useCurrentUser();
@@ -153,10 +154,8 @@ function UserProfilePage() {
 
             if (response.ok) {
                 snack('success', 'Account and all your cards have been successfully deleted');
-                // redirect immediately to avoid keeping user on the page
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                removeToken(); // clear local token
+                navigate(ROUTES.root, { replace: true }); // redirect to home
             } else {
                 let errorMessage = response.statusText;
                 const contentType = response.headers.get('content-type');

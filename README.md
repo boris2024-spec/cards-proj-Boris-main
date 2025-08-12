@@ -1,8 +1,12 @@
-[🌐 Demo Site (Vercel)](https://cards-proj-boris-main.vercel.app)
+<div align="center">
 
-# Business Cards Management System 
+[🌐 Live Demo](https://cards-proj-boris-main.vercel.app)
 
-A modern React web application for managing and displaying business cards with a responsive design and comprehensive user management system.
+# Business Card Manager (React + MUI)
+
+Modern React application to manage, browse and favorite business cards. Responsive UI, role‑based access, form validation, and clean architecture.
+
+</div>
 
 ## 🚀 Project Overview
 
@@ -36,16 +40,17 @@ This application provides a complete business card management solution with user
 - **Empty States**: Informative messages when no content is available
 - **Accessibility**: Tooltips, ARIA labels, and keyboard navigation
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 
-- **React 19.1.0** - Modern React with hooks and functional components
-- **Material-UI 7.1.0** - Comprehensive React UI framework
-- **React Router DOM 7.6.0** - Client-side routing
-- **Axios 1.9.0** - HTTP client for API requests
-- **Joi 17.13.3** - Schema validation for forms
-- **JWT Decode 4.0.0** - JSON Web Token handling
-- **Vite** - Fast development build tool
-- **ESLint** - Code quality and consistency
+- **React 19.1.0** – Functional components + hooks
+- **MUI 7.1.0 (@mui/material + @emotion)** – UI components & theming
+- **React Router DOM 7.6.0** – Client routing
+- **Axios ^1.10.0** – HTTP client
+- **Joi 17.13.3** – Schema validation
+- **jwt-decode 4.0.0** – Token parsing
+- **Vite 6** – Dev/build tooling (ESM, fast HMR)
+- **ESLint 9** – Linting & consistency
+- **PropTypes** – Runtime prop validation (lightweight safety)
 
 ## 📁 Project Structure
 
@@ -117,29 +122,30 @@ src/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (version 14 or higher)
-- npm or yarn package manager
+- Node.js **18+** (рекомендуется 20 LTS) – Vite 6 / React 19 требуют минимум 18
+- npm (встроен в Node) или pnpm/yarn (опционально)
 
 ### Installation
 
 1. **Clone the repository**
-   ```bash
-   git clone [repository-url]
-   cd cards-proj-Boris
+   ```powershell
+   git clone <REPO_URL>
+   cd cards-proj-Boris-main
    ```
 
 2. **Install dependencies**
-   ```bash
+   ```powershell
    npm install
    ```
 
-3. **Start development server**
-   ```bash
+3. **Environment variables (create before first run)** – см. раздел ниже
+
+4. **Start development server**
+   ```powershell
    npm run dev
    ```
 
-4. **Open in browser**
-   Navigate to `http://localhost:5173`
+5. **Open in browser** → http://localhost:5173
 
 ### Available Scripts
 
@@ -150,59 +156,119 @@ src/
 
 ## 🌐 API Integration
 
-The application integrates with a REST API for:
-- User authentication and management
-- Business card CRUD operations
-- User preferences (likes/favorites)
+The app communicates with a REST API layer for:
+- Authentication & user lifecycle
+- Business card CRUD
+- Favorites (likes)
 
-**Base API URL**: `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/`
+Base URL is injected via environment variable (see below) instead of hard‑coding.
 
 ## 📱 Responsive Design
 
-The application is fully responsive with breakpoints:
-- **Mobile**: < 600px (xs)
-- **Tablet**: 600-960px (sm)
-- **Desktop**: 960-1280px (md)
-- **Large Desktop**: > 1280px (lg)
+MUI breakpoint system:
+- xs: <600px (mobile)
+- sm: 600–960px (tablet)
+- md: 960–1280px (small desktop)
+- lg: 1280–1920px (desktop)
+- xl: >1920px (wide)
 
-## 🔒 Security Features
+## 🔒 Security Notes
 
-- JWT token-based authentication
-- Protected routes based on user roles
-- Form validation with Joi schemas
-- Secure API communication
-- Local storage management for user sessions
+- JWT (stored in localStorage) – simple implementation; be aware of XSS risks
+- Role‑based protected routes (guards) 
+- Joi validation on submit (client-side)
+- Axios instance (planned: add interceptors for 401 refresh / global error)
+- Potential future enhancement: move to httpOnly cookies + CSRF token
 
-## 🎯 Future Enhancements
+⚠️ Since tokens live in `localStorage`, any injected script could access them. Mitigate via strict Content Security Policy & sanitization.
 
-- [ ] Real-time notifications
-- [ ] Advanced search filters
-- [ ] Card categories and tags
-- [ ] Export functionality
-- [ ] Analytics dashboard
-- [ ] Mobile app version
+## 🧩 Environment Variables
 
-## 👨‍💻 Development
+Create a `.env.local` in project root (ignored by Git by default when using standard patterns):
 
-This project follows modern React best practices:
-- Functional components with hooks
-- Context API for state management
-- Custom hooks for reusable logic
-- Component composition patterns
-- Clean code principles
-- Responsive design patterns
+```
+VITE_API_BASE=https://monkfish-app-z9uza.ondigitalocean.app/bcard2
+VITE_APP_NAME=Cards Manager
+```
+
+Usage example:
+```js
+// api.js (example)
+import axios from 'axios';
+export const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE });
+```
+
+Do NOT commit secrets. For different stages (preview / prod) configure environment in the hosting platform (e.g. Vercel project settings).
+
+## 🎯 Roadmap / Future Enhancements
+
+Legend: 🔼 high impact · 🧪 experimental · 🕒 backlog
+
+- [ ] Advanced search filters (city/tag) 🔼
+- [ ] Real-time notifications (WebSocket) 🧪
+- [ ] Card categories & tags 🔼
+- [ ] Export (PDF / CSV) 🕒
+- [ ] Analytics dashboard (engagement) 🕒
+- [ ] Optimistic UI for likes 🧪
+- [ ] Image upload service (cloud storage) 🔼
+- [ ] Mobile app (React Native / Expo) 🕒
+
+## 👨‍💻 Architecture & Patterns
+
+- Layered: pages (routing) → components (UI) → hooks (logic) → services (IO)
+- Context Providers: User, Theme, Snackbar
+- Validation layer: per‑form Joi schemas
+- Reusability: generic `Form`, `Input`, controlled via custom `useForm`
+- Future: extract Axios instance & interceptors; introduce error boundary
+
+### Adding a New Page (quick recipe)
+1. Create `YourPage.jsx` under `src/pages`
+2. Add route in `routes/routesDict.js`
+3. Register in `Router.jsx`
+4. (Optional) Link via `HeaderLink.jsx`
+
+## 🤝 Contributing
+
+1. Fork & create feature branch: `feat/short-description`
+2. Install deps: `npm ci` (or `npm install` first time)
+3. Run dev + make changes
+4. Lint before commit: `npm run lint -- --fix`
+5. Open PR with concise description & screenshots (if UI changes)
+
+### Coding Guidelines
+- Keep components small & focused
+- Prefer composition over prop drilling
+- Centralize side effects (services / providers)
+- Avoid premature optimization; measure first
+
+## 🧪 Testing (Planned)
+
+Test stack (proposed): Vitest + @testing-library/react
+Initial priorities:
+- Render critical pages without crash
+- Form validation edge cases
+- Protected route redirects
 
 ## 📄 License
 
-This project is developed as part of a full-stack development course and is intended for educational purposes.
+Educational / training project. If reusing code publicly, attribute the original author. (Optionally add an SPDX license like MIT if distribution broadens.)
 
 ---
 
-**Note**: This application demonstrates modern web development techniques and serves as a comprehensive example of a React-based business management system.
+**Note**: This application demonstrates modern web development techniques and serves as a comprehensive example of a React-based business card management system.
 
-## 📊 GitHub Stats
+## 📊 Optional GitHub Stats (Display Only)
+
+<details>
+<summary>Show stats images</summary>
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=boris2024-spec&show_icons=true&theme=radical" alt="GitHub Stats" height="150"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=boris2024-spec&layout=compact&theme=radical" alt="Top Langs" height="150"/>
+   <img src="https://github-readme-stats.vercel.app/api?username=boris2024-spec&show_icons=true&theme=radical" alt="GitHub Stats" height="150" />
+   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=boris2024-spec&layout=compact&theme=radical" alt="Top Langs" height="150" />
 </p>
+
+</details>
+
+---
+
+Made with ❤️ using React 19 & MUI 7.

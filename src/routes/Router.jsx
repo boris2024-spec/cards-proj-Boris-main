@@ -13,6 +13,7 @@ import EditProfilePage from "../pages/EditProfilePage";
 import ROUTES from "./routesDict";
 import SandboxPage from "../pages/SandboxPage";
 import CreateCard from "../users/components/CreateCard";
+import BusinessRoute from "../guards/BusinessRoute";
 function Router() {
   return (
     <Routes>
@@ -22,7 +23,14 @@ function Router() {
       <Route path={ROUTES.about} element={<AboutPage />} />
       <Route path={ROUTES.login} element={<LoginPage />} />
       <Route path={ROUTES.register} element={<RegisterPage />} />
-      <Route path={ROUTES.sandbox} element={<SandboxPage />} />
+      <Route
+        path={ROUTES.sandbox}
+        element={
+          <BusinessRoute>
+            <SandboxPage />
+          </BusinessRoute>
+        }
+      />
       <Route path={ROUTES.cardDetails} element={<CardDetailsPage />} />
       <Route path={ROUTES.editCard} element={<CreateCard />} />
       <Route path={ROUTES.userProfile} element={<UserProfilePage />} />

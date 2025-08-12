@@ -17,22 +17,22 @@ import {
   LocationOn,
   Badge as BadgeIcon
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
-import { useCurrentUser } from "../../users/providers/UserProvider"; // ⬅️ добавили
+import { useCurrentUser } from "../../users/providers/UserProvider"; // added
 
 function Footer() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:1080px)');
-  const { user } = useCurrentUser(); // ⬅️ берем пользователя
-  const isBiz = Boolean(user?.isBusiness ?? user?.biz ?? false); // ⬅️ бизнес-флаг
+  const { user } = useCurrentUser(); // get user
+  const isBiz = Boolean(user?.isBusiness ?? user?.biz ?? false); // business flag
 
   const navigationItems = [
     { icon: <Home />, label: "Home", route: ROUTES.root },
     { icon: <Info />, label: "About", route: ROUTES.about },
     { icon: <Favorite />, label: "Favorites", route: ROUTES.favorite },
-    { icon: <BadgeIcon />, label: "My Cards", route: ROUTES.sandbox, requireBiz: true }, // ⬅️ видно только бизнесу
+    { icon: <BadgeIcon />, label: "My Cards", route: ROUTES.sandbox, requireBiz: true }, // visible only to business users
   ];
 
   const socialLinks = [
@@ -88,11 +88,12 @@ function Footer() {
             }}
           >
             {navigationItems
-              .filter(item => !(item.requireBiz && !isBiz)) // ⬅️ фильтр по бизнес-статусу
+              .filter(item => !(item.requireBiz && !isBiz))
               .map((item) => (
                 <IconButton
                   key={item.label}
-                  onClick={() => navigate(item.route)}
+                  component={Link}
+                  to={item.route}
                   sx={{
                     color: 'text.secondary',
                     transition: 'all 0.2s ease',

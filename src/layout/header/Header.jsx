@@ -42,19 +42,18 @@ import {
   LocationOn,
   Badge as BadgeIcon // import BadgeIcon
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
 import { useTheme } from "../../providers/CustomThemeProvider";
 import { useCurrentUser } from "../../users/providers/UserProvider";
 import { removeToken } from "../../users/services/localStorageService";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 function Header() {
   const { toggleMode, isDark } = useTheme();
   const muiTheme = useMuiTheme();
   const { user } = useCurrentUser();
-  const isBiz = Boolean(user?.isBusiness ?? user?.biz ?? false); // 👈 Добавляем флаг isBiz
+  const isBiz = Boolean(user?.isBusiness ?? user?.biz ?? false); // add isBiz flag
   console.log("user:", user);
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,13 +67,20 @@ function Header() {
   // Add synchronization of query with URL q parameter
   useEffect(() => {
     const q = searchParams.get("q") || "";
-    setQuery(q);
-  }, [searchParams]);
+    if (q !== query) setQuery(q);
+  }, [searchParams]); // avoid redundant setQuery calls
 
 
   useEffect(() => {
-    setSearchParams({ q: query });
-  }, [query, setSearchParams]);
+    // light debounce and replace to avoid cluttering history
+    const id = setTimeout(() => {
+      const current = searchParams.get("q") || "";
+      if (current !== query) {
+        setSearchParams({ q: query }, { replace: true });
+      }
+    }, 300);
+    return () => clearTimeout(id);
+  }, [query, searchParams, setSearchParams]);
 
   const handleDrawerToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -86,17 +92,16 @@ function Header() {
   };
 
   const handleLogout = () => {
-    // Remove token from localStorage using service
     removeToken();
-    // Reload page
-    window.location.reload();
+    navigate(ROUTES.login, { replace: true }); // without reload
+    window.location.reload(); // refresh page
   };
 
   const menuItems = [
     { label: 'Home', path: ROUTES.root, icon: <Home /> },
     { label: 'About', path: ROUTES.about, icon: <Info /> },
     { label: 'Favorite Cards', path: ROUTES.favorite, icon: <Favorite /> },
-    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon />, requireBiz: true }, // 👈 Добавляем requireBiz
+    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon />, requireBiz: true }, // add requireBiz
   ];
 
   const authItems = user ? [] : [
@@ -171,7 +176,7 @@ function Header() {
                 <ListItemText primary={item.label} />
               </ListItemButton>
             </ListItem>
-        ))}
+          ))}
       </List>
 
       {/* Theme Toggle */}
@@ -276,12 +281,13 @@ function Header() {
           {!isMobile && (
             <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
               {menuItems
-                .filter(item => !(item.requireBiz && !isBiz))
+                .filter(item => !(item.requireBiz && !isBiz)) // filter by business requirement if isBiz is implemented
                 .map((item) => (
                   <IconButton
                     key={item.label}
                     color="inherit"
-                    onClick={() => navigate(item.path)}
+                    component={Link}
+                    to={item.path}
                     sx={{
                       textTransform: 'none',
                       color: 'white',
@@ -298,7 +304,7 @@ function Header() {
                       {item.label}
                     </Typography>
                   </IconButton>
-              ))}
+                ))}
             </Box>
           )}
 
