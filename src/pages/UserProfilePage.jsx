@@ -1,10 +1,10 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import {
     Container,
     Paper,
     Typography,
     Box,
-    Avatar,
     Divider,
     Button,
     Grid,
@@ -24,7 +24,6 @@ import {
 } from '@mui/icons-material';
 import { useCurrentUser } from '../users/providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import ROUTES from '../routes/routesDict';
 import { useSnack } from '../providers/SnackbarProvider';
 
@@ -34,10 +33,12 @@ function UserProfilePage() {
     const navigate = useNavigate();
     const snack = useSnack();
 
+    //  download delete state
+    const [deleting, setDeleting] = useState(false);
+
     console.log('UserProfilePage: user =', user);
     console.log('UserProfilePage: token =', token);
 
-    // If user is not authorized, show message with login option
     if (!token || !user) {
         return (
             <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -47,9 +48,7 @@ function UserProfilePage() {
                         p: 4,
                         borderRadius: 2,
                         textAlign: 'center',
-                        background: theme.palette.mode === 'dark'
-
-
+                        background: theme.palette.mode === 'dark',
                     }}
                 >
                     <Box sx={{ mb: 3 }}>
@@ -74,101 +73,106 @@ function UserProfilePage() {
         );
     }
 
-    // Function to format name
     const formatName = (name) => {
         if (!name) return 'User';
         const { first, middle, last } = name;
         return `${first || ''} ${middle || ''} ${last || ''}`.trim();
     };
 
-    // Function to format address
     const formatAddress = (address) => {
         if (!address) return 'Not specified';
         const { street, houseNumber, city, state, country, zip } = address;
         return `${street || ''} ${houseNumber || ''}, ${city || ''}, ${state || ''} ${zip || ''}, ${country || ''}`.trim();
     };
 
-    // Button handlers
     const handleEditProfile = () => {
-        // Redirect to profile edit page
+        if (deleting) return; // prevent clicks while deleting
         navigate(ROUTES.editProfile);
     };
 
     const handleDeleteAccount = async () => {
-        const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
-        if (confirmDelete) {
-            try {
-                // 1. Get all user cards
-                const cardsRes = await fetch(
-                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards?userId=${user._id}`,
-                    {
-                        headers: {
-                            "x-auth-token": token,
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                const userCards = cardsRes.ok ? await cardsRes.json() : [];
+        if (deleting) return; // prevent multiple executions
+        const confirmDelete = window.confirm(
+            'Are you sure you want to delete your account? This action cannot be undone.'
+        );
+        if (!confirmDelete) return;
 
-                // 2. Delete each user card in parallel
-                await Promise.all(
-                    userCards.map(card =>
-                        fetch(
-                            `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${card._id}`,
-                            {
-                                method: 'DELETE',
-                                headers: {
-                                    "x-auth-token": token,
-                                    "Content-Type": "application/json",
-                                },
-                            }
-                        )
-                    )
-                );
-
-                // 3. Delete all user likes (if API supports such endpoint)
-                await fetch(
-                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/likes/user/${user._id}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            "x-auth-token": token,
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-
-                // 4. Delete user account
-                const response = await fetch(
-                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            "x-auth-token": token,
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                if (response.ok) {
-                    snack('success', 'Account and all your cards have been successfully deleted');
-                    setTimeout(() => {
-                        window.location.reload(); // Reload page after deletion
-                    }, 5000); // Small delay to ensure the user sees the message
-                } else {
-                    let errorMessage = response.statusText;
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        const error = await response.json();
-                        errorMessage = error.message || errorMessage;
-                    } else {
-                        const errorText = await response.text();
-                        errorMessage = errorText || errorMessage;
-                    }
-                    alert('Error deleting account: ' + errorMessage);
+        setDeleting(true);
+        try {
+            // 1) get all user cards
+            const cardsRes = await fetch(
+                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards?userId=${user._id}`,
+                {
+                    headers: {
+                        'x-auth-token': token,
+                        'Content-Type': 'application/json',
+                    },
                 }
-            } catch (err) {
-                alert('Network error: ' + err.message);
+            );
+            const userCards = cardsRes.ok ? await cardsRes.json() : [];
+
+            // 2) delete cards in parallel
+            await Promise.all(
+                userCards.map((card) =>
+                    fetch(
+                        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${card._id}`,
+                        {
+                            method: 'DELETE',
+                            headers: {
+                                'x-auth-token': token,
+                                'Content-Type': 'application/json',
+                            },
+                        }
+                    )
+                )
+            );
+
+            // 3) delete user likes (if endpoint is supported)
+            await fetch(
+                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/likes/user/${user._id}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'x-auth-token': token,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            // 4) delete account
+            const response = await fetch(
+                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'x-auth-token': token,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            if (response.ok) {
+                snack('success', 'Account and all your cards have been successfully deleted');
+                // redirect immediately to avoid keeping user on the page
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                let errorMessage = response.statusText;
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const error = await response.json();
+                    errorMessage = error.message || errorMessage;
+                } else {
+                    const errorText = await response.text();
+                    errorMessage = errorText || errorMessage;
+                }
+                snack('error', 'Error deleting account: ' + errorMessage);
             }
+        } catch (err) {
+            snack('error', 'Network error: ' + err.message);
+        } finally {
+            setDeleting(false);
         }
     };
 
@@ -179,12 +183,10 @@ function UserProfilePage() {
                 sx={{
                     p: 4,
                     borderRadius: 2,
-                    background: theme.palette.mode === 'dark'
-                        ? 'gray.800'
-                        : 'white',
+                    background: theme.palette.mode === 'dark' ? 'gray.800' : 'white',
                 }}
             >
-                {/* Header Section */}
+                {/* Header */}
                 <Box
                     sx={{
                         display: 'flex',
@@ -202,10 +204,9 @@ function UserProfilePage() {
                             borderRadius: '50%',
                             marginBottom: 16,
                             objectFit: 'cover',
-                            border: `3px solid ${theme.palette.primary.main}`
+                            border: `3px solid ${theme.palette.primary.main}`,
                         }}
                     />
-
                     <Typography
                         variant="h4"
                         component="h1"
@@ -216,21 +217,15 @@ function UserProfilePage() {
                     >
                         User Profile
                     </Typography>
-
-                    <Typography
-                        variant="h6"
-                        color="text.secondary"
-                        textAlign="center"
-                    >
+                    <Typography variant="h6" color="text.secondary" textAlign="center">
                         {formatName(user.name)}
                     </Typography>
                 </Box>
 
                 <Divider sx={{ my: 3 }} />
 
-                {/* Profile Information */}
+                {/* Info */}
                 <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
-                    {/* Contact Information */}
                     <Grid item xs={12} md={6}>
                         <Card sx={{ height: '100%' }}>
                             <CardContent>
@@ -277,7 +272,6 @@ function UserProfilePage() {
                         </Card>
                     </Grid>
 
-                    {/* Location Information */}
                     <Grid item xs={12} md={6}>
                         <Card sx={{ height: '100%' }}>
                             <CardContent>
@@ -325,7 +319,7 @@ function UserProfilePage() {
                     </Grid>
                 </Grid>
 
-                {/* Action Buttons */}
+                {/* Actions */}
                 <Box
                     sx={{
                         display: 'flex',
@@ -338,11 +332,8 @@ function UserProfilePage() {
                         variant="contained"
                         startIcon={<Edit />}
                         onClick={handleEditProfile}
-                        sx={{
-                            px: 3,
-                            py: 1,
-                            borderRadius: 2,
-                        }}
+                        sx={{ px: 3, py: 1, borderRadius: 2 }}
+                        disabled={deleting} // click protection during deletion
                     >
                         Edit Profile
                     </Button>
@@ -350,15 +341,21 @@ function UserProfilePage() {
                     <Button
                         variant="outlined"
                         color="error"
-                        startIcon={<Delete />}
                         onClick={handleDeleteAccount}
-                        sx={{
-                            px: 3,
-                            py: 1,
-                            borderRadius: 2,
-                        }}
+                        disabled={deleting}
+                        sx={{ px: 3, py: 1, borderRadius: 2 }}
                     >
-                        Delete Account
+                        {deleting ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <CircularProgress size={20} color="error" />
+                                Deleting...
+                            </Box>
+                        ) : (
+                            <>
+                                <Delete sx={{ mr: 1 }} />
+                                Delete Account
+                            </>
+                        )}
                     </Button>
                 </Box>
             </Paper>
