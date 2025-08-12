@@ -122,8 +122,8 @@ src/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js **18+** (рекомендуется 20 LTS) – Vite 6 / React 19 требуют минимум 18
-- npm (встроен в Node) или pnpm/yarn (опционально)
+- Node.js **18+** (recommended 20 LTS) – Vite 6 / React 19 require at least 18
+- npm (bundled with Node) or pnpm/yarn (optional)
 
 ### Installation
 
@@ -138,7 +138,7 @@ src/
    npm install
    ```
 
-3. **Environment variables (create before first run)** – см. раздел ниже
+3. **Environment variables (create before first run)** – see section
 
 4. **Start development server**
    ```powershell
