@@ -50,11 +50,11 @@ export default function useForm(initialForm, schemaObj, onSubmit) {
   };
 
   const validateForm = () => {
-    // Проверяем, что нет ошибок
+    // Check that there are no errors
     const hasErrors = Object.keys(errors).length > 0;
 
-    // Проверяем, что все обязательные поля заполнены
-    // Используем Joi для определения обязательных полей
+    // Check that all required fields are filled
+    // Use Joi to determine required fields
     const { error } = schema.validate(formDetails);
     const isValid = !error;
 

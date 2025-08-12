@@ -25,12 +25,12 @@ function CreateCard({ onCardCreated }) {
         if (id) {
             setEditMode(true);
             setLoading(true);
-            // Получаем данные карточки для редактирования
+            // Get card data for editing
             axios.get(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`)
                 .then(res => {
                     const data = res.data;
                     setCardData(data);
-                    // Заполняем форму
+                    // Fill the form
                     handleFillForm(data);
                     setSnack('success', 'Card data loaded successfully');
                 })
@@ -51,14 +51,14 @@ function CreateCard({ onCardCreated }) {
                     }
 
                     setSnack('error', errorMessage);
-                    navigate('/sandbox'); // Перенаправляем обратно к списку карточек
+                    navigate('/sandbox'); // Redirect back to cards list
                 })
                 .finally(() => setLoading(false));
         }
     }, [id, setSnack, navigate]);
 
     const handleFillForm = (data) => {
-        // Преобразуем данные карточки в формат формы
+        // Transform card data to form format
         const filled = {
             title: data.title || '',
             subtitle: data.subtitle || '',
@@ -75,7 +75,7 @@ function CreateCard({ onCardCreated }) {
             houseNumber: data.address?.houseNumber || '',
             zip: data.address?.zip || '',
         };
-        // Устанавливаем значения в useForm
+        // Set values in useForm
         Object.keys(filled).forEach(key => {
             handleChange({ target: { name: key, value: filled[key] } });
         });
@@ -83,13 +83,13 @@ function CreateCard({ onCardCreated }) {
 
     const handleCreateOrUpdateCard = async (cardData) => {
         try {
-            // Проверяем авторизацию
+            // Check authorization
             if (!token) {
                 setSnack('error', 'You must be logged in to create or edit cards');
                 return;
             }
 
-            // Проверяем наличие обязательных полей
+            // Check required fields
             if (!cardData.title || !cardData.subtitle || !cardData.description ||
                 !cardData.phone || !cardData.email || !cardData.country ||
                 !cardData.city || !cardData.street || !cardData.houseNumber) {
@@ -97,14 +97,14 @@ function CreateCard({ onCardCreated }) {
                 return;
             }
 
-            // Преобразуем houseNumber в число
+            // Convert houseNumber to number
             const houseNumber = parseInt(cardData.houseNumber);
             if (isNaN(houseNumber) || houseNumber < 1) {
                 setSnack('error', 'House number must be a valid number greater than 0');
                 return;
             }
 
-            // Преобразуем zip в число, если оно указано
+            // Convert zip to number if provided
             let zip = null;
             if (cardData.zip && cardData.zip.trim() !== '') {
                 zip = parseInt(cardData.zip);
@@ -136,7 +136,7 @@ function CreateCard({ onCardCreated }) {
             };
 
             if (editMode && id) {
-                // PUT-запрос для обновления
+                // PUT request for update
                 await axios.put(
                     `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`,
                     cardDataForServer,
@@ -145,14 +145,14 @@ function CreateCard({ onCardCreated }) {
                 setSnack('success', 'The card has been updated successfully!');
                 navigate(`/card-details/${id}`);
             } else {
-                // POST-запрос для создания
+                // POST request for creation
                 const response = await axios.post(
                     "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
                     cardDataForServer,
                     { headers: { "x-auth-token": token } }
                 );
                 setSnack('success', 'Card successfully created!');
-                // Получаем ID созданной карточки из ответа сервера
+                // Get ID of created card from server response
                 const createdCardId = response.data._id || response.data.id;
                 navigate(`/card-details/${createdCardId}`);
             }
@@ -162,11 +162,11 @@ function CreateCard({ onCardCreated }) {
         } catch (error) {
             console.error('Error saving card:', error);
 
-            // Более детальная обработка ошибок
+            // More detailed error handling
             let errorMessage = "Error saving card. Please try again.";
 
             if (error.response) {
-                // Ошибка от сервера
+                // Server error
                 if (error.response.status === 400) {
                     errorMessage = "Invalid card data. Please check all required fields.";
                 } else if (error.response.status === 401) {
@@ -181,7 +181,7 @@ function CreateCard({ onCardCreated }) {
                     errorMessage = error.response.data.message;
                 }
             } else if (error.request) {
-                // Ошибка сети
+                // Network error
                 errorMessage = "Network error. Please check your connection and try again.";
             }
 

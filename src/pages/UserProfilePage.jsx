@@ -35,7 +35,7 @@ function UserProfilePage() {
     console.log('UserProfilePage: user =', user);
     console.log('UserProfilePage: token =', token);
 
-    // Если пользователь не авторизован, показываем сообщение с возможностью входа
+    // If user is not authorized, show message with login option
     if (!token || !user) {
         return (
             <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -72,23 +72,23 @@ function UserProfilePage() {
         );
     }
 
-    // Функция для форматирования имени
+    // Function to format name
     const formatName = (name) => {
         if (!name) return 'User';
         const { first, middle, last } = name;
         return `${first || ''} ${middle || ''} ${last || ''}`.trim();
     };
 
-    // Функция для форматирования адреса
+    // Function to format address
     const formatAddress = (address) => {
         if (!address) return 'Not specified';
         const { street, houseNumber, city, state, country, zip } = address;
         return `${street || ''} ${houseNumber || ''}, ${city || ''}, ${state || ''} ${zip || ''}, ${country || ''}`.trim();
     };
 
-    // Обработчики для кнопок
+    // Button handlers
     const handleEditProfile = () => {
-        // Перенаправляем на страницу редактирования профиля
+        // Redirect to profile edit page
         navigate(ROUTES.editProfile);
     };
 
@@ -96,7 +96,7 @@ function UserProfilePage() {
         const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
         if (confirmDelete) {
             try {
-                // 1. Получить все карточки пользователя
+                // 1. Get all user cards
                 const cardsRes = await fetch(
                     `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards?userId=${user._id}`,
                     {
@@ -108,7 +108,7 @@ function UserProfilePage() {
                 );
                 const userCards = cardsRes.ok ? await cardsRes.json() : [];
 
-                // 2. Удалить каждую карточку пользователя параллельно
+                // 2. Delete each user card in parallel
                 await Promise.all(
                     userCards.map(card =>
                         fetch(
@@ -124,7 +124,7 @@ function UserProfilePage() {
                     )
                 );
 
-                // 3. Удалить все лайки пользователя (если API поддерживает такой эндпоинт)
+                // 3. Delete all user likes (if API supports such endpoint)
                 await fetch(
                     `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/likes/user/${user._id}`,
                     {
@@ -136,7 +136,7 @@ function UserProfilePage() {
                     }
                 );
 
-                // 4. Удалить аккаунт пользователя
+                // 4. Delete user account
                 const response = await fetch(
                     `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
                     {
@@ -149,7 +149,7 @@ function UserProfilePage() {
                 );
                 if (response.ok) {
                     alert('Account and all your cards/likes deleted successfully.');
-                    window.location.reload(); // Перезагрузка страницы после удаления аккаунта
+                    window.location.reload(); // Reload page after account deletion
                 } else {
                     let errorMessage = response.statusText;
                     const contentType = response.headers.get('content-type');

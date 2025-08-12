@@ -34,13 +34,13 @@ import {
   ExpandMore,
   AccountCircle,
   Logout,
-  // добавляю иконки для соцсетей
+  // add social network icons
   GitHub,
   LinkedIn,
   Email,
   Phone,
   LocationOn,
-  Badge as BadgeIcon // импортирую BadgeIcon
+  Badge as BadgeIcon // import BadgeIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
@@ -64,7 +64,7 @@ function Header() {
   // Check if screen is mobile
   const isMobile = useMediaQuery('(max-width:1100px)');
 
-  // Добавляю синхронизацию query с параметром q из URL
+  // Add synchronization of query with URL q parameter
   useEffect(() => {
     const q = searchParams.get("q") || "";
     setQuery(q);
@@ -85,9 +85,9 @@ function Header() {
   };
 
   const handleLogout = () => {
-    // Удаляем токен из localStorage используя сервис
+    // Remove token from localStorage using service
     removeToken();
-    // Перезагружаем страницу
+    // Reload page
     window.location.reload();
   };
 
@@ -95,7 +95,7 @@ function Header() {
     { label: 'Home', path: ROUTES.root, icon: <Home /> },
     { label: 'About', path: ROUTES.about, icon: <Info /> },
     { label: 'Favorite Cards', path: ROUTES.favorite, icon: <Favorite /> },
-    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon /> }, // меняю иконку на BadgeIcon
+    { label: 'My Cards', path: ROUTES.sandbox, icon: <BadgeIcon /> }, // change icon to BadgeIcon
   ];
 
   const authItems = user ? [] : [
@@ -103,7 +103,7 @@ function Header() {
     { label: 'Login', path: ROUTES.login, icon: <Login /> },
   ];
 
-  // socialLinks для Mobile Drawer
+  // socialLinks for Mobile Drawer
   const socialLinks = [
     { icon: <GitHub />, label: "GitHub", url: "https://github.com" },
     { icon: <LinkedIn />, label: "LinkedIn", url: "https://linkedin.com" },
@@ -112,7 +112,7 @@ function Header() {
     { icon: <LocationOn />, label: "Location", url: "https://maps.app.goo.gl/A6uTkTi8eMzWShxGA" },
   ];
 
-  // Добавляю функцию-хелпер для форматирования имени
+  // Add helper function for name formatting
   const capitalize = (str) => str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : '';
 
   const drawer = (

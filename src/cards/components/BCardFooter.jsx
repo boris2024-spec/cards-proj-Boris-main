@@ -70,7 +70,7 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete, ownerId }) {
         disableSpacing
       >
         {user?._id === ownerId ? (
-          // Обычное расположение для собственных карточек
+          // Normal layout for own cards
           <>
             {/* Management Actions */}
             <Box sx={{ display: 'flex', gap: 0.5, minWidth: 80 }}>
@@ -145,7 +145,7 @@ function BCardFooter({ toggleLike, cardId, likes, phone, onDelete, ownerId }) {
             </Box>
           </>
         ) : (
-          // Кнопки по краям для чужих карточек
+          // Buttons on edges for other users' cards
           <>
             <Tooltip title="Call Business" arrow>
               <IconButton

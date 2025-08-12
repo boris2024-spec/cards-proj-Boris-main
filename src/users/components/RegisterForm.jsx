@@ -28,7 +28,7 @@ const handleSignup = async (userDetails, navigate) => {
       userDetailsForServer
     );
     console.log(response);
-    // Переход на страницу логина после успешной регистрации
+    // Navigate to login page after successful registration
     navigate(ROUTES.login);
   } catch (error) {
     console.log(error);
@@ -48,11 +48,11 @@ function RegisterForm() {
     (userDetails) => handleSignup(userDetails, navigate)
   );
 
-  // Логируем текущее состояние isBusiness при каждом рендере
+  // Log current isBusiness state on each render
   console.log('RegisterForm render - formDetails.isBusiness:', formDetails.isBusiness);
   console.log('RegisterForm render - full formDetails:', formDetails);
 
-  // Отслеживаем изменения isBusiness
+  // Track changes in isBusiness
   useEffect(() => {
     console.log('useEffect - isBusiness changed to:', formDetails.isBusiness);
   }, [formDetails.isBusiness]);
@@ -272,7 +272,7 @@ function RegisterForm() {
               value={formDetails.zip}
             />
           </Grid>
-          {/* Чекбокс для isBusiness */}
+          {/* Checkbox for isBusiness */}
           <Grid item xs={12} sm={6} justifyContent={"flex-start"} >
             <FormControlLabel
               control={
@@ -288,7 +288,7 @@ function RegisterForm() {
                         value: e.target.checked
                       }
                     });
-                    // Убираем этот лог, так как состояние обновляется асинхронно
+                    // Remove this log since state updates asynchronously
                     // console.log('After handleChange - formDetails.isBusiness:', formDetails.isBusiness);
                   }}
                   color="primary"

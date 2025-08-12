@@ -30,7 +30,7 @@ function EditProfilePage() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    // Состояние формы
+    // Form state
     const [formData, setFormData] = useState({
         firstName: '',
         middleName: '',
@@ -47,7 +47,7 @@ function EditProfilePage() {
         zip: '',
     });
 
-    // Загружаем данные пользователя в форму
+    // Load user data into the form
     useEffect(() => {
         if (user) {
             setFormData({
@@ -68,13 +68,13 @@ function EditProfilePage() {
         }
     }, [user]);
 
-    // Если пользователь не авторизован
+    // If user is not authorized
     if (!token || !user) {
         navigate(ROUTES.login);
         return null;
     }
 
-    // Обработчик изменения полей формы
+    // Form fields change handler
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -83,14 +83,14 @@ function EditProfilePage() {
         }));
     };
 
-    // Обработчик отправки формы
+    // Form submission handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         setSuccess('');
 
-        // Простая валидация
+        // Simple validation
         if (!String(formData.firstName || '').trim() || !String(formData.lastName || '').trim()) {
             setError('First name and last name are required');
             setLoading(false);
@@ -111,7 +111,7 @@ function EditProfilePage() {
                     last: String(formData.lastName || '').trim(),
                 },
                 phone: String(formData.phone || '').trim(),
-                // email не включается в обновление - сервер не разрешает его изменять
+                // email is not included in update - server does not allow changing it
                 image: {
                     url: String(formData.imageUrl || '').trim() || "",
                     alt: String(formData.imageAlt || '').trim() || "user image",
@@ -173,7 +173,7 @@ function EditProfilePage() {
         }
     };
 
-    // Обработчик отмены
+    // Cancel handler
     const handleCancel = () => {
         navigate(ROUTES.userProfile);
     };

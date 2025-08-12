@@ -87,7 +87,7 @@ function SandboxPage() {
     [token, setSnack]
   );
 
-  // Функция для обновления списка карточек после создания новой
+  // Function to update cards list after creating a new one
   const refreshCards = useCallback(() => {
     if (token) {
       getMyCardsFromServer();
@@ -96,7 +96,7 @@ function SandboxPage() {
     }
   }, [getMyCardsFromServer, token, setSnack]);
 
-  // Функция для удаления карточки из состояния
+  // Function to remove a card from state
   const handleDeleteCard = useCallback((cardId) => {
     setCards(prevCards => prevCards.filter(card => card._id !== cardId));
     setSnack("success", "The card has been successfully deleted.");
@@ -111,7 +111,7 @@ function SandboxPage() {
     }
   }, [getMyCardsFromServer, token]);
 
-  // Отслеживание прокрутки для показа кнопки "вернуться наверх"
+  // Track scrolling to show "back to top" button
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;

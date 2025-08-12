@@ -108,7 +108,7 @@ function CardsPage() {
     }
   }, [searchParams, cards]);
 
-  // Сортировка карточек по фильтру
+  // Sort cards by filter
   const getSortedCards = () => {
     let sorted = [...filteredCards];
     if (filter === "likes") {
@@ -119,7 +119,7 @@ function CardsPage() {
     return sorted;
   };
 
-  // Отслеживание прокрутки для показа кнопки "вернуться наверх"
+  // Track scrolling to show "back to top" button
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -160,7 +160,7 @@ function CardsPage() {
 
   const searchQuery = searchParams.get("q");
 
-  // Добавьте массив вариантов сортировки перед компонентом CardsPage
+  // Add sorting options array before CardsPage component
   const sortOptions = [
     { label: "No sorting", value: "default" },
     { label: "likes", value: "likes" },
@@ -208,7 +208,7 @@ function CardsPage() {
                 }
               </Typography>
             </Box>
-            {/* Фильтр карточек */}
+            {/* Cards filter */}
             <Box sx={{ ml: { xs: 0, sm: 'auto' }, mt: { xs: 2, sm: 0 }, minWidth: 180 }}>
               <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
                 <InputLabel

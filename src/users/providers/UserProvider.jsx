@@ -11,7 +11,7 @@ export default function UserProvider({ children }) {
   const [user, setUser] = useState(getUser());
   const [token, setToken] = useState(getToken());
 
-  // Функция для получения пользователя по id и токену
+  // Function to get user by id and token
   const fetchUserById = async (userId, token) => {
     try {
       const response = await axios.get(
@@ -30,14 +30,14 @@ export default function UserProvider({ children }) {
   };
 
   useEffect(() => {
-    // Если есть токен и userId, получаем свежие данные пользователя
+    // If token and userId exist, fetch fresh user data
     if (token) {
       const decoded = getUser();
       if (decoded && decoded._id) {
         fetchUserById(decoded._id, token);
       }
     }
-    // Если нет токена, сбрасываем пользователя
+    // If no token, reset user
     if (!token) {
       setUser(null);
     }
