@@ -26,11 +26,13 @@ import { useCurrentUser } from '../users/providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import ROUTES from '../routes/routesDict';
+import { useSnack } from '../providers/SnackbarProvider';
 
 function UserProfilePage() {
     const { user, token } = useCurrentUser();
     const theme = useTheme();
     const navigate = useNavigate();
+    const snack = useSnack();
 
     console.log('UserProfilePage: user =', user);
     console.log('UserProfilePage: token =', token);
@@ -46,8 +48,8 @@ function UserProfilePage() {
                         borderRadius: 2,
                         textAlign: 'center',
                         background: theme.palette.mode === 'dark'
-                            ? 'linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%)'
-                            : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+
+
                     }}
                 >
                     <Box sx={{ mb: 3 }}>
@@ -148,8 +150,10 @@ function UserProfilePage() {
                     }
                 );
                 if (response.ok) {
-                    alert('Account and all your cards/likes deleted successfully.');
-                    window.location.reload(); // Reload page after account deletion
+                    snack('success', 'Account and all your cards have been successfully deleted');
+                    setTimeout(() => {
+                        window.location.reload(); // Reload page after deletion
+                    }, 5000); // Small delay to ensure the user sees the message
                 } else {
                     let errorMessage = response.statusText;
                     const contentType = response.headers.get('content-type');
