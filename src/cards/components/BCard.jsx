@@ -32,7 +32,10 @@ function BCard({ card, toggleLike, onDelete }) {
       elevation={2}
     >
       <CardActionArea
+        component="div"
         onClick={handleCardClick}
+        role="button"
+        tabIndex={0}
         sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
       >
         <CardMedia
