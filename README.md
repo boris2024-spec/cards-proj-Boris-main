@@ -184,18 +184,29 @@ MUI breakpoint system:
 
 ## 🧩 Environment Variables
 
-Create a `.env.local` in project root (ignored by Git by default when using standard patterns):
+Create a `.env` file in project root (already included in .gitignore):
 
 ```
-VITE_API_BASE=https://bcard-ojqa.onrender.com
-VITE_APP_NAME=Cards Manager
+VITE_API_URL=https://bcard-ojqa.onrender.com
 ```
 
-Usage example:
+An `.env.example` file is provided as a template. Copy it to create your own `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Then replace the placeholder URL with the actual API URL.
+
+For production deployment, the API URL is encoded in the code as a fallback if environment variables are not available, ensuring the application works in all environments.
+
+Usage in code:
 ```js
-// api.js (example)
-import axios from 'axios';
-export const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE });
+// userApiServicece.js (example)
+const encodedURL = "aHR0cHM6Ly9iY2FyZC1vanFhLm9ucmVuZGVyLmNvbQ=="; // Base64 encoded URL
+const decodeURL = (encoded) => atob(encoded);
+
+export const API_BASE_URL = import.meta.env.VITE_API_URL || decodeURL(encodedURL);
 ```
 
 Do NOT commit secrets. For different stages (preview / prod) configure environment in the hosting platform (e.g. Vercel project settings).
