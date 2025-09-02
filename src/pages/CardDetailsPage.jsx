@@ -32,6 +32,7 @@ import { useSnack } from '../providers/SnackbarProvider';
 import { useCurrentUser } from '../users/providers/UserProvider';
 import { useTheme } from '../providers/CustomThemeProvider';
 import ROUTES from '../routes/routesDict';
+import { buildApiUrl } from '../users/services/userApiServicece';
 
 function CardDetailsPage() {
     const { id } = useParams();
@@ -50,7 +51,7 @@ function CardDetailsPage() {
                 setError(null);
 
                 const response = await axios.get(
-                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`
+                    buildApiUrl(`cards/${id}`)
                 );
 
                 setCard(response.data);
@@ -76,7 +77,7 @@ function CardDetailsPage() {
 
         try {
             await axios.patch(
-                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`,
+                buildApiUrl(`cards/${id}`),
                 {},
                 { headers: { "x-auth-token": token } }
             );

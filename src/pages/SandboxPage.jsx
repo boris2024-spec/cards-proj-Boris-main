@@ -17,6 +17,7 @@ import { useTheme } from "../providers/CustomThemeProvider";
 import { useSnack } from "../providers/SnackbarProvider";
 import BCards from "../cards/components/BCards";
 import CreateCard from "../users/components/CreateCard";
+import { buildApiUrl } from "../users/services/userApiServicece";
 
 function SandboxPage() {
   const [cards, setCards] = useState([]);
@@ -34,7 +35,7 @@ function SandboxPage() {
       setError(null);
 
       const response = await axios.get(
-        "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/my-cards",
+        buildApiUrl("cards/my-cards"),
         {
           headers: {
             "x-auth-token": token
@@ -57,7 +58,7 @@ function SandboxPage() {
     async (cardId) => {
       try {
         await axios.patch(
-          `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
+          buildApiUrl(`cards/${cardId}`),
           {},
           { headers: { "x-auth-token": token } }
         );

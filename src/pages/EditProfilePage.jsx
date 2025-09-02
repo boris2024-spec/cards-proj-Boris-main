@@ -21,6 +21,7 @@ import { useCurrentUser } from '../users/providers/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routesDict';
 import axios from 'axios';
+import { buildApiUrl } from '../users/services/userApiServicece';
 
 function EditProfilePage() {
     const { user, token, setUser } = useCurrentUser();
@@ -131,7 +132,7 @@ function EditProfilePage() {
             console.log('Token:', token);
 
             const response = await axios.put(
-                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
+                buildApiUrl(`users/${user._id}`), // единообразно без ведущего '/'
                 updateData,
                 {
                     headers: {

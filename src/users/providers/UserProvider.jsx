@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { getToken, getUser } from "../services/localStorageService";
+import { buildApiUrl } from "../services/userApiServicece";
 import axios from "axios";
 
 const UserContext = createContext();
@@ -15,7 +16,7 @@ export default function UserProvider({ children }) {
   const fetchUserById = async (userId, token) => {
     try {
       const response = await axios.get(
-        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${userId}`,
+        buildApiUrl(`users/${userId}`),
         {
           headers: {
             "x-auth-token": token

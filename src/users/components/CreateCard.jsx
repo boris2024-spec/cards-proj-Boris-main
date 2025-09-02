@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCurrentUser } from "../providers/UserProvider";
 import { useSnack } from "../../providers/SnackbarProvider";
 import { useEffect, useState } from "react";
+import { buildApiUrl } from "../services/userApiServicece";
 
 function CreateCard({ onCardCreated }) {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ function CreateCard({ onCardCreated }) {
             setEditMode(true);
             setLoading(true);
             // Get card data for editing
-            axios.get(`https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`)
+            axios.get(buildApiUrl(`cards/${id}`))
                 .then(res => {
                     const data = res.data;
                     setCardData(data);
@@ -138,7 +139,7 @@ function CreateCard({ onCardCreated }) {
             if (editMode && id) {
                 // PUT request for update
                 await axios.put(
-                    `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${id}`,
+                    buildApiUrl(`cards/${id}`),
                     cardDataForServer,
                     { headers: { "x-auth-token": token } }
                 );
@@ -147,7 +148,7 @@ function CreateCard({ onCardCreated }) {
             } else {
                 // POST request for creation
                 const response = await axios.post(
-                    "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
+                    buildApiUrl("cards"),
                     cardDataForServer,
                     { headers: { "x-auth-token": token } }
                 );

@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routesDict";
 import { useTheme } from "../../providers/CustomThemeProvider";
 import { useSnack } from "../../providers/SnackbarProvider";
+import { buildApiUrl } from "../services/userApiServicece";
 
 const handleSignup = async (userDetails, navigate, snack) => {
   console.log('handleSignup - userDetails.isBusiness:', userDetails.isBusiness);
@@ -25,7 +26,7 @@ const handleSignup = async (userDetails, navigate, snack) => {
   console.log('handleSignup - normalized userDetails:', userDetailsForServer);
   try {
     const response = await axios.post(
-      "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users",
+      buildApiUrl("users"),
       userDetailsForServer
     );
     console.log(response);

@@ -187,7 +187,7 @@ MUI breakpoint system:
 Create a `.env.local` in project root (ignored by Git by default when using standard patterns):
 
 ```
-VITE_API_BASE=https://monkfish-app-z9uza.ondigitalocean.app/bcard2
+VITE_API_BASE=https://bcard-ojqa.onrender.com
 VITE_APP_NAME=Cards Manager
 ```
 

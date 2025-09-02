@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
     Container,
@@ -27,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routesDict';
 import { useSnack } from '../providers/SnackbarProvider';
 import { removeToken } from '../users/services/localStorageService';
+import { buildApiUrl } from '../users/services/userApiServicece';
 
 function UserProfilePage() {
     const { user, token } = useCurrentUser();
@@ -102,7 +102,7 @@ function UserProfilePage() {
         try {
             // 1) get all user cards
             const cardsRes = await fetch(
-                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards?userId=${user._id}`,
+                buildApiUrl(`cards?userId=${user._id}`),
                 {
                     headers: {
                         'x-auth-token': token,
@@ -116,7 +116,7 @@ function UserProfilePage() {
             await Promise.all(
                 userCards.map((card) =>
                     fetch(
-                        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${card._id}`,
+                        buildApiUrl(`cards/${card._id}`),
                         {
                             method: 'DELETE',
                             headers: {
@@ -130,7 +130,7 @@ function UserProfilePage() {
 
             // 3) delete user likes (if endpoint is supported)
             await fetch(
-                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/likes/user/${user._id}`,
+                buildApiUrl(`likes/user/${user._id}`),
                 {
                     method: 'DELETE',
                     headers: {
@@ -142,7 +142,7 @@ function UserProfilePage() {
 
             // 4) delete account
             const response = await fetch(
-                `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
+                buildApiUrl(`users/${user._id}`),
                 {
                     method: 'DELETE',
                     headers: {
