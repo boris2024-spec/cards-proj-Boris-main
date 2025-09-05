@@ -1,5 +1,6 @@
 // Using environment variable instead of hardcoded URL
 export const API_BASE_URL = import.meta.env.VITE_API_URL || "https://bcard-ojqa.onrender.com";
+// export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 // (Optional) common axios instance. Not used everywhere yet, but ready for gradual migration.
 // import axios from 'axios';
